@@ -1,6 +1,7 @@
 import Css from "@/components/Css";
 import Html from "@/components/Html";
 import Javascript from "@/components/Javascript";
+import Nextjs from "@/components/Nextjs";
 import Reactjs from "@/components/Reactjs";
 import {
   Box,
@@ -30,8 +31,10 @@ const Technology = () => {
           <Reactjs />
         ) : content === "Javascript" ? (
           <Javascript />
-        ) : content === "Html" ? (
+        ) : content === "html" ? (
           <Html />
+        ) : content === "NextJs" ? (
+          <Nextjs />
         ) : (
           "testing"
         )}

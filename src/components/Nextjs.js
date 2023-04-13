@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 const content = [
   {
-    question: "1. What is Html Js ?",
+    question: "1. What is Next Js ?",
     description:
       "React is a open source javaScript library for building single  page user interfaces. It allows us to create reusable UI    components. Under the hood, react use a Virtual Dom, which will   efficiently update and render when every data changes",
     example: "",
@@ -27,7 +27,7 @@ const content = [
     example: "",
   },
 ];
-const Html = () => {
+const Nextjs = () => {
   return (
     <Accordion defaultIndex={[0]} allowMultiple>
       {content.map((item, idx) => {
@@ -75,4 +75,4 @@ const Html = () => {
   );
 };
 
-export default Html;
+export default Nextjs;
