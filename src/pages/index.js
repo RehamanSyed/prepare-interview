@@ -2,10 +2,25 @@ import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
-import { Container, Grid, GridItem, Heading } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Container,
+  Grid,
+  GridItem,
+  Heading,
+} from "@chakra-ui/react";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
+const tech = [
+  { technology: "Html", page: "html" },
+  { technology: "CSS", page: "CSS" },
+  { technology: "Javascript", page: "Javascript" },
+  { technology: "React", page: "React" },
+  { technology: "NextJs", page: "NextJs" },
+];
 export default function Home() {
   return (
     <>
@@ -15,16 +30,38 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <Container maxW={"contianer.md"}>
-        <Grid templateColumns="repeat(5, 1fr)" gap={6}>
-          <GridItem w="100%" h="10" bg="blue.500" />
-          <GridItem w="100%" h="10" bg="blue.500" />
-          <GridItem w="100%" h="10" bg="blue.500" />
-          <GridItem w="100%" h="10" bg="blue.500" />
-          <GridItem w="100%" h="10" bg="blue.500" />
-        </Grid>
-      </Container>
+      <Box maxH="calc(100vh)">
+        <Container maxW={"contianer.lg"} centerContent>
+          <Heading textAlign={"center"} my={10}>
+            Interview Questions
+          </Heading>
+          <Grid templateColumns="repeat(3, 1fr)" gap={6}>
+            {tech.map((item, idx) => {
+              return (
+                <GridItem key={idx}>
+                  <Link
+                    href={{
+                      pathname: `/${item.page}`,
+                      query: { content: `${item.page}` },
+                    }}
+                  >
+                    <Box
+                      p={10}
+                      bg={"gray.300"}
+                      textAlign={"center"}
+                      rounded="lg"
+                    >
+                      <Heading textTransform={"uppercase"} size={"lg"}>
+                        {item.technology}
+                      </Heading>
+                    </Box>
+                  </Link>
+                </GridItem>
+              );
+            })}
+          </Grid>
+        </Container>
+      </Box>
     </>
   );
 }
