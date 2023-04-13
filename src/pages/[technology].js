@@ -3,28 +3,19 @@ import Html from "@/components/Html";
 import Javascript from "@/components/Javascript";
 import Nextjs from "@/components/Nextjs";
 import Reactjs from "@/components/Reactjs";
-import {
-  Box,
-  Container,
-  Heading,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-} from "@chakra-ui/react";
+import { Box, Container, Heading, Button, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
 
 const Technology = () => {
   const route = useRouter();
   const { content } = route.query;
-
   return (
     <Box>
       <Container maxW={"container.lg"}>
-        <Heading my={10}>{content}</Heading>
-
+        <Flex justifyContent={"space-between"} alignItems={"center"}>
+          <Heading my={10}>{content}</Heading>
+          <Button onClick={() => route.back()}> Go Back </Button>
+        </Flex>
         {content === "CSS" ? (
           <Css />
         ) : content === "React" ? (
@@ -36,7 +27,7 @@ const Technology = () => {
         ) : content === "NextJs" ? (
           <Nextjs />
         ) : (
-          "testing"
+          ""
         )}
       </Container>
     </Box>

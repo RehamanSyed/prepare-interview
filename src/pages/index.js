@@ -15,11 +15,11 @@ import Link from "next/link";
 const inter = Inter({ subsets: ["latin"] });
 
 const tech = [
-  { technology: "Html", page: "html" },
-  { technology: "CSS", page: "CSS" },
-  { technology: "Javascript", page: "Javascript" },
+  // { technology: "Html", page: "html" },
+  // { technology: "CSS", page: "CSS" },
+  // { technology: "Javascript", page: "Javascript" },
   { technology: "React", page: "React" },
-  { technology: "NextJs", page: "NextJs" },
+  // { technology: "NextJs", page: "NextJs" },
 ];
 export default function Home() {
   return (
