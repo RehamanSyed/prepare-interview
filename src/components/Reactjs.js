@@ -49,19 +49,7 @@ const content = [
     <li><strong>componentWillUnmount()</strong>: This is called just before the component is removed from the DOM, and is used to perform any necessary cleanup, such as cancelling any ongoing requests or removing event listeners. </li>
     
     </ul>
-        
-    
-       
-        
-        
-    
-       
-    
-        
-        
-        
-    
-       
+         
         
         
         `,
