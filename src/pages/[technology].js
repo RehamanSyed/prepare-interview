@@ -18,7 +18,7 @@ const Technology = () => {
         </Flex>
         {content === "CSS" ? (
           <Css />
-        ) : content === "React" ? (
+        ) : content === "Reactjs" ? (
           <Reactjs />
         ) : content === "Javascript" ? (
           <Javascript />
