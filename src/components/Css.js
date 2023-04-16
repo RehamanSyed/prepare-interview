@@ -26,6 +26,16 @@ const content = [
 `,
     example: "",
   },
+
+  {
+    question: "3. New content added",
+    description: `<p> It's a <strong>lightweight</strong> representation of the actual DOM, which is a tree-like structure that represents the HTML content of a web page.</p>
+    <p>When a change occurs, React calculates the difference between the old Virtual DOM and the new Virtual DOM, and updates only the parts that have changed. This is known as "reconciliation" and it can save a lot of time and resources compared to updating the actual DOM every time a change occurs. </p>
+     <p>In summary, the Virtual DOM is a key feature of React that helps make it a fast and efficient library for building web applications.</p>
+    
+`,
+    example: "",
+  },
 ];
 const Css = () => {
   return (

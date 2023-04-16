@@ -11,17 +11,19 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
 
-const inter = Inter({ subsets: ["latin"] });
-
-const tech = [
-  // { technology: "Html", page: "html" },
-  // { technology: "CSS", page: "CSS" },
-  // { technology: "Javascript", page: "Javascript" },
-  { technology: "React", page: "React" },
-  // { technology: "NextJs", page: "NextJs" },
-];
 export default function Home() {
+  const { isLoading, error, data } = useQuery({
+    queryKey: ["techData"],
+    queryFn: () =>
+      fetch("http://localhost:5000/api/v1/alltech").then((res) => res.json()),
+  });
+
+  if (isLoading) return "Loading...";
+
+  if (error) return "An error has occurred: " + error.message;
+
   return (
     <>
       <Head>
@@ -36,7 +38,7 @@ export default function Home() {
             Interview Questions
           </Heading>
           <Grid templateColumns="repeat(3, 1fr)" gap={6}>
-            {tech.map((item, idx) => {
+            {data.map((item, idx) => {
               return (
                 <GridItem key={idx}>
                   <Link
