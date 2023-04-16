@@ -44,7 +44,10 @@ export default function Home() {
                   <Link
                     href={{
                       pathname: `/${item.page}`,
-                      query: { content: `${item.page}` },
+                      query: {
+                        content: `${item.technology}`,
+                        page: `${item.page}`,
+                      },
                     }}
                   >
                     <Box

@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 
 const Technology = () => {
   const route = useRouter();
-  const { content } = route.query;
+  const { content, page } = route.query;
   return (
     <Box>
       <Container maxW={"container.lg"}>
