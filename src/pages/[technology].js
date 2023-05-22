@@ -3,6 +3,7 @@ import Html from "@/components/Html";
 import Javascript from "@/components/Javascript";
 import Nextjs from "@/components/Nextjs";
 import Reactjs from "@/components/Reactjs";
+import MainLayout from "@/layouts/main.layout";
 import { Box, Container, Heading, Button, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
@@ -14,7 +15,7 @@ const Technology = () => {
       <Container maxW={"container.lg"}>
         <Flex justifyContent={"space-between"} alignItems={"center"}>
           <Heading my={10}>{content}</Heading>
-          <Button onClick={() => route.back()}> Go Back </Button>
+          {/* <Button onClick={() => route.back()}> Go Back </Button> */}
         </Flex>
         {content === "CSS" ? (
           <Css />
@@ -35,3 +36,6 @@ const Technology = () => {
 };
 
 export default Technology;
+Technology.getLayout = function getLayout(page) {
+  return <MainLayout>{page}</MainLayout>;
+};
