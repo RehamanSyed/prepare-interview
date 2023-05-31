@@ -15,7 +15,7 @@ const Technology = () => {
       <Container maxW={"container.lg"}>
         <Flex justifyContent={"space-between"} alignItems={"center"}>
           <Heading my={10}>{content}</Heading>
-          {/* <Button onClick={() => route.back()}> Go Back </Button> */}
+          <Button onClick={() => route.back()}> Go Back </Button>
         </Flex>
         {content === "CSS" ? (
           <Css />

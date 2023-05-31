@@ -4,8 +4,10 @@ import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import {
   Box,
+  Button,
   Center,
   Container,
+  Flex,
   Grid,
   GridItem,
   Heading,
@@ -13,17 +15,41 @@ import {
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import MainLayout from "@/layouts/main.layout";
+import { getSession, signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+export async function getServerSideProps(context) {
+  const { req, res } = context;
+
+  const session = await getSession({ req });
+
+  console.log("Context ---<", session);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/auth/signin",
+      },
+    };
+  }
+  return {
+    props: { session },
+  };
+}
 const Home = () => {
+  const route = useRouter();
   const { isLoading, error, data } = useQuery({
     queryKey: ["techData"],
     queryFn: () =>
       fetch("http://localhost:5000/api/v1/alltech").then((res) => res.json()),
   });
 
+  const { data: session } = useSession();
+  console.log("session data", session);
+  if (session === null) {
+    route.push("/auth/signin");
+  }
   if (isLoading) return "Loading...";
-
   if (error) return "An error has occurred: " + error.message;
-
   return (
     <>
       <Head>
@@ -33,10 +59,15 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Box maxH="calc(100vh)">
-        <Container maxW={"contianer.lg"} centerContent>
-          <Heading textAlign={"center"} my={10}>
-            Interview Questions
-          </Heading>
+        <Container maxW={"container.lg"}>
+          <Flex justifyContent={"space-between"} alignItems={"center"}>
+            <Heading textAlign={"center"} fontSize={20} my={10}>
+              Welcome {session.user.email}
+            </Heading>
+            <Button colorScheme="red" onClick={() => signOut()}>
+              Logout
+            </Button>
+          </Flex>
           <Grid templateColumns="repeat(3, 1fr)" gap={6}>
             {data.map((item, idx) => {
               return (
@@ -52,11 +83,15 @@ const Home = () => {
                   >
                     <Box
                       p={10}
-                      bg={"gray.300"}
+                      bg={"gray.100"}
                       textAlign={"center"}
                       rounded="lg"
                     >
-                      <Heading textTransform={"uppercase"} size={"lg"}>
+                      <Heading
+                        textTransform={"uppercase"}
+                        fontWeight="light"
+                        size={"md"}
+                      >
                         {item.technology}
                       </Heading>
                     </Box>

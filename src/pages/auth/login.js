@@ -9,11 +9,25 @@ import {
   InputLeftElement,
   InputRightElement,
   Stack,
+  Text,
 } from "@chakra-ui/react";
 import Head from "next/head";
+import { useSession, signIn, signOut } from "next-auth/react";
 import React from "react";
 import { AiOutlineKey, AiOutlineUser } from "react-icons/ai";
+import { useRouter } from "next/router";
 const Login = () => {
+  const route = useRouter();
+  const { data: session } = useSession();
+  console.log("session data", session);
+  if (session) {
+    return (
+      <>
+        <Text> Signed in as {session.user.email}</Text>;
+        <button onClick={() => signOut()}>Sign out</button>
+      </>
+    );
+  }
   return (
     <>
       <Head>
@@ -24,7 +38,7 @@ const Login = () => {
       </Head>
       <Box>
         <Container>
-          <form>
+          {/* <form>
             <Stack
               spacing={4}
               minH={"calc(100vh)"}
@@ -58,7 +72,22 @@ const Login = () => {
                 Login
               </Button>
             </Stack>
-          </form>
+          </form> */}
+          <Stack
+            spacing={4}
+            minH={"calc(100vh)"}
+            justifyContent={"center"}
+            alignItems="center"
+          >
+            <Heading>Login</Heading>
+            <Button
+              variant="solid"
+              colorScheme="messenger"
+              onClick={() => signIn()}
+            >
+              Sign With Github
+            </Button>
+          </Stack>
         </Container>
       </Box>
     </>
