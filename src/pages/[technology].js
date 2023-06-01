@@ -13,9 +13,28 @@ const Technology = () => {
   return (
     <Box>
       <Container maxW={"container.lg"}>
-        <Flex justifyContent={"space-between"} alignItems={"center"}>
-          <Heading my={10}>{content}</Heading>
-          <Button onClick={() => route.back()}> Go Back </Button>
+        <Flex
+          justifyContent={"space-between"}
+          alignItems={"center"}
+          bg={"gray.900"}
+          mb={2}
+          p={5}
+          px={10}
+          roundedBottomLeft={"2xl"}
+          roundedBottomRight={"2xl"}
+        >
+          <Heading fontWeight={"semibold"} fontSize={24} color="white">
+            {content}
+          </Heading>
+          <Button
+            onClick={() => route.back()}
+            colorScheme="yellow"
+            fontSize={14}
+            color="black"
+            fontWeight={"light"}
+          >
+            Go Back
+          </Button>
         </Flex>
         {content === "CSS" ? (
           <Css />

@@ -8,10 +8,12 @@ import {
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
-  Text,
   Button,
   Spinner,
+  Image,
+  Flex,
 } from "@chakra-ui/react";
+
 import { useQuery } from "@tanstack/react-query";
 
 const Reactjs = () => {
@@ -30,24 +32,20 @@ const Reactjs = () => {
 
   return (
     <Accordion allowMultiple>
-      {isLoading && !data ? (
-        <Spinner />
-      ) : (
+      {data &&
         data.map((item, idx) => {
           return (
-            <AccordionItem border="none" key={idx}>
+            <AccordionItem border="none" key={idx} mb={2}>
               <AccordionButton
-                _hover={{
-                  background: "gray.100",
-                  borderRadius: "full",
-                }}
-                _expanded={{ bg: "gray.300", color: "black", rounded: "full" }}
+                bg={"gray.100"}
+                rounded="2xl"
+                _expanded={{ bg: "teal.500", color: "white", rounded: "2xl" }}
               >
                 <Box
                   as="span"
                   flex="1"
                   textAlign="left"
-                  fontWeight="semibold"
+                  fontWeight="medium"
                   fontSize={16}
                   py={2}
                   px={5}
@@ -82,14 +80,49 @@ const Reactjs = () => {
                 {item.example === null ? (
                   ""
                 ) : (
-                  <Button as="a" target="_blank" mt={5} href={item.example}>
+                  <Button
+                    as="a"
+                    target="_blank"
+                    variant={"link"}
+                    fontWeight={"light"}
+                    colorScheme={"blue"}
+                    fontSize={14}
+                    font
+                    mt={5}
+                    href={item.example}
+                  >
                     See the Example
                   </Button>
                 )}
               </AccordionPanel>
             </AccordionItem>
           );
-        })
+        })}
+      {data && data.length == 0 && (
+        <Container
+          centerContent
+          bg={"gray.50"}
+          maxW={"container"}
+          rounded={"3xl"}
+        >
+          <Flex
+            minH={"50vh"}
+            flexDir={"column"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            gap={5}
+          >
+            <Image
+              src="./empty.png"
+              width="100"
+              height="100"
+              filter="grayscale(50%)"
+            />
+            <Heading fontWeight={"light"} fontSize={20}>
+              No Data available
+            </Heading>
+          </Flex>
+        </Container>
       )}
     </Accordion>
   );
