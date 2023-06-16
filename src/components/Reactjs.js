@@ -117,6 +117,7 @@ const Reactjs = () => {
               width="100"
               height="100"
               filter="grayscale(50%)"
+              alt="no-image"
             />
             <Heading fontWeight={"light"} fontSize={20}>
               No Data available
