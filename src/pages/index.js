@@ -59,7 +59,7 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Box maxH="calc(100vh)">
-        <Container maxW={"container.lg"}>
+        
           <Flex justifyContent={"space-between"} alignItems={"center"}>
             <Heading textAlign={"center"} fontSize={20} my={10}>
               Welcome {session.user.email}
@@ -100,7 +100,7 @@ const Home = () => {
               );
             })}
           </Grid>
-        </Container>
+      
       </Box>
     </>
   );
