@@ -20,7 +20,7 @@ export const authOptions = {
       async authorize(credentials, req) {
         console.log("credentials", credentials);
         const { email, password } = credentials;
-        const response = await Fetcher.post("user/login", {
+        const response = await Fetcher.post("/user/login", {
           email: credentials.email,
           password: credentials.password,
         });
@@ -36,6 +36,8 @@ export const authOptions = {
   ],
   pages: {
     signin: "/auth/signin",
+    signout: "/auth/signout",
+    error:"/auth/error"
   },
   session: {
     strategy: "jwt",
