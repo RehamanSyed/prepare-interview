@@ -1,14 +1,13 @@
 import Head from "next/head";
-import Image from "next/image";
+
 import {
   Box,
-  Button,
-  Center,
   Container,
   Flex,
   Grid,
   GridItem,
   Heading,
+  Text,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
@@ -57,22 +56,38 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Box maxH="calc(100vh)">
-        <Container maxW={"container.lg"}>
-          <Box w={"100%"} h={"30vh"} bg={"gray.200"}></Box>
-
-          {/* <Flex justifyContent={"space-between"} alignItems={"center"}>
-            <Heading textAlign={"center"} fontSize={20} my={10}>
-              Welcome {session.user.email}
-            </Heading>
-            <Button colorScheme="red" onClick={() => signOut()}>
-              Logout
-            </Button>
-          </Flex> */}
-          <Grid templateColumns="repeat(4, 1fr)" gap={6}>
+      <Box bg={"white"} minH={"100vh"}>
+        <Box w={"100%"} bg={"gray.100"}>
+          <Container maxW={"container.sm"}>
+            <Flex
+              minHeight={"50vh"}
+              flexDir={"column"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              gap={5}
+            >
+              <Heading>Start WarmUp</Heading>
+              <Text textAlign={"center"}>
+                A quick way to prepare for your next interview. Practice key
+                questions, get insights about your answers, and get more
+                comfortable interviewing.
+              </Text>
+            </Flex>
+          </Container>
+        </Box>
+        <Container maxW={"container.lg"} mt={-32}>
+          <Grid templateColumns="repeat(4, 1fr)" gap={3} mt={5} p={5}>
             {data.map((item, idx) => {
               return (
-                <GridItem key={idx}>
+                <GridItem
+                  colSpan={1}
+                  key={idx}
+                  h={32}
+                  bg={"gray.600"}
+                 
+                  textAlign={"center"}
+                  rounded="lg"
+                >
                   <Link
                     href={{
                       pathname: `/${item.page}`,
@@ -82,20 +97,15 @@ const Home = () => {
                       },
                     }}
                   >
-                    <Box
-                      p={10}
-                      bg={"gray.100"}
-                      textAlign={"center"}
-                      rounded="lg"
-                    >
+                    <Flex flexDir={'column'} justifyContent={'center'} color={"white"} minH={32} >
                       <Heading
                         textTransform={"uppercase"}
-                        fontWeight="light"
+                        fontWeight="bold"
                         size={"md"}
                       >
                         {item.technology}
                       </Heading>
-                    </Box>
+                    </Flex>
                   </Link>
                 </GridItem>
               );

@@ -4,41 +4,43 @@ import Javascript from "@/components/Javascript";
 import Nextjs from "@/components/Nextjs";
 import Reactjs from "@/components/Reactjs";
 import MainLayout from "@/layouts/main.layout";
-import { Box, Container, Heading, Button, Flex } from "@chakra-ui/react";
+import { Box, Container, Heading, Button, Flex, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
 const Technology = () => {
   const route = useRouter();
   const { content, page } = route.query;
   return (
-    <Box minH={'100vh'}>
-      <Container maxW={"container.lg"}>
-        <Flex
-          justifyContent={"space-between"}
-          alignItems={"center"}
-          bg={"gray.900"}
-          mb={2}
-          p={5}
-          px={10}
-          h={'20vh'}
-          
-        >
-          <Heading fontWeight={"semibold"} fontSize={24} color="white">
-            {content}
-          </Heading>
-          <Button
-            onClick={() => route.back()}
-            colorScheme="yellow"
-            fontSize={14}
-            color="black"
-            fontWeight={"light"}
+    <Box minH={"100vh"} bg={"white"}>
+      <Box w={"100%"} bg={"gray.100"}>
+        <Container maxW={"container.sm"}>
+          <Flex
+            minHeight={"50vh"}
+            flexDir={"column"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            gap={5}
           >
-            Go Back
-          </Button>
-        </Flex>
-
-
-
+            <Heading>{content} WarmUp</Heading>
+            <Text textAlign={"center"}>
+              A quick way to prepare for your next interview. Practice key
+              questions, get insights about your answers, and get more
+              comfortable interviewing.
+            </Text>
+            <Button
+              onClick={() => route.back()}
+              colorScheme="red"
+              fontSize={14}
+              color="black"
+              fontWeight={"bold"}
+              variant={"outline"}
+            >
+              Go Back
+            </Button>
+          </Flex>
+        </Container>
+      </Box>
+      <Container maxW={"container.lg"}>
         {content === "CSS" ? (
           <Css />
         ) : content === "React" ? (

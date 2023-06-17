@@ -3,6 +3,9 @@ import { ChakraProvider } from "@chakra-ui/react";
 import theme from "../../theme";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SessionProvider } from "next-auth/react";
+// Supports weights 100-900
+// import '@fontsource-variable/inter';
+import '@fontsource/poppins';
 
 export default function App({
   Component,

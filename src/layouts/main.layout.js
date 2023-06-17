@@ -8,15 +8,13 @@ import React from "react";
 const MainLayout = ({ children }) => {
   return (
     <Providers>
-    
-        <Container maxW={"container.lg"}>
-          <CommonHeader />
-          <Box as="main" minH={"100vh"}>
-            {children}
-          </Box>
-          <Footer />
-        </Container>
-      
+      <Box bg={"gray.200"}>
+        <CommonHeader />
+        <Box as="main">
+          {children}
+        </Box>
+        <Footer />
+      </Box>
     </Providers>
   );
 };

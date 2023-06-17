@@ -15,14 +15,13 @@ import {
 } from "@chakra-ui/react";
 
 import { useQuery } from "@tanstack/react-query";
+import { Fetcher } from "client";
 
 const Reactjs = () => {
   const { isLoading, error, data } = useQuery({
     queryKey: ["techData"],
-    queryFn: () =>
-      fetch("http://localhost:5000/api/v1/allReactPost").then((res) =>
-        res.json()
-      ),
+    queryFn: async () =>
+      await Fetcher.get("/allReactPost").then((res) => res.data),
   });
 
   console.log("List data", data);
@@ -31,6 +30,8 @@ const Reactjs = () => {
   if (error) return "An error has occurred: " + error.message;
 
   return (
+    <Box mt={-28} bg={'white'} p={10} rounded={'xl'} shadow={'2xl'} shadowColor>
+
     <Accordion allowMultiple>
       {data &&
         data.map((item, idx) => {
@@ -126,6 +127,7 @@ const Reactjs = () => {
         </Container>
       )}
     </Accordion>
+    </Box>
   );
 };
 
