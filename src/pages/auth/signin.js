@@ -1,3 +1,4 @@
+import AuthLayout from "@/layouts/auth.layout";
 import {
   Box,
   Button,
@@ -21,7 +22,7 @@ export async function getServerSideProps(context) {
     props: { csrfToken: await getCsrfToken(context) },
   };
 }
-export default function SignIn({ csrfToken }) {
+const SignIn = ({ csrfToken }) => {
   const [inputVal, setInputVal] = useState("test@gmail.com");
   const [passwordVal, setPasswordVal] = useState("12345");
   const route = useRouter();
@@ -35,7 +36,7 @@ export default function SignIn({ csrfToken }) {
       password: passwordVal,
       redirect: false,
     });
-    console.log("result", result);
+    // console.log("result", result);
   };
   const googleHandler = async (e) => {
     signIn("google", { callbackUrl: "http://localhost:3000/" });
@@ -48,7 +49,7 @@ export default function SignIn({ csrfToken }) {
   }
   return (
     <Box>
-      <Container maxW={"30%"}>
+      <Container maxW={"20%"}>
         <Stack
           spacing={4}
           minH={"calc(100vh)"}
@@ -72,7 +73,7 @@ export default function SignIn({ csrfToken }) {
             </Button>
           </Flex>
           <Divider my={10} />
-          <form onSubmit={loginHandler}>
+          <form onSubmit={loginHandler} style={{ width: "100%" }}>
             <Flex justifyContent={"center"} flexDirection={"column"} gap={5}>
               <InputGroup>
                 <InputLeftElement pointerEvents="none">
@@ -119,4 +120,8 @@ export default function SignIn({ csrfToken }) {
       </Container>
     </Box>
   );
-}
+};
+export default SignIn;
+SignIn.getLayout = function getLayout(page) {
+  return <AuthLayout>{page}</AuthLayout>;
+};

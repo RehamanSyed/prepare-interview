@@ -10,6 +10,7 @@ import {
   AccordionIcon,
   Text,
 } from "@chakra-ui/react";
+import CommonHeader from "../sharedUI/components/Header";
 const content = [
   {
     question: "1. What is Html Js ?",
@@ -29,49 +30,51 @@ const content = [
 ];
 const Html = () => {
   return (
-    <Accordion defaultIndex={[0]} allowMultiple>
-      {content.map((item, idx) => {
-        return (
-          <AccordionItem border="none" key={idx}>
-            <AccordionButton
-              _hover={{
-                background: "gray.100",
-                borderRadius: "full",
-              }}
-              _expanded={{ bg: "gray.300", color: "black", rounded: "full" }}
-            >
-              <Box
-                as="span"
-                flex="1"
-                textAlign="left"
-                fontWeight="bold"
-                fontSize={18}
-                py={2}
-                px={5}
-              >
-                {item.question}
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-            <AccordionPanel p={5}>
-              <Box
-                dangerouslySetInnerHTML={{ __html: item.description }}
-                sx={{
-                  "& strong": {
-                    color: "green.500",
-                  },
-                  "& code": {
-                    backgroundColor: "gray.100",
-                    padding: "0.1rem",
-                    borderRadius: "0.2rem",
-                  },
+    <>
+      <Accordion defaultIndex={[0]} allowMultiple>
+        {content.map((item, idx) => {
+          return (
+            <AccordionItem border="none" key={idx}>
+              <AccordionButton
+                _hover={{
+                  background: "gray.100",
+                  borderRadius: "full",
                 }}
-              ></Box>
-            </AccordionPanel>
-          </AccordionItem>
-        );
-      })}
-    </Accordion>
+                _expanded={{ bg: "gray.300", color: "black", rounded: "full" }}
+              >
+                <Box
+                  as="span"
+                  flex="1"
+                  textAlign="left"
+                  fontWeight="bold"
+                  fontSize={18}
+                  py={2}
+                  px={5}
+                >
+                  {item.question}
+                </Box>
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel p={5}>
+                <Box
+                  dangerouslySetInnerHTML={{ __html: item.description }}
+                  sx={{
+                    "& strong": {
+                      color: "green.500",
+                    },
+                    "& code": {
+                      backgroundColor: "gray.100",
+                      padding: "0.1rem",
+                      borderRadius: "0.2rem",
+                    },
+                  }}
+                ></Box>
+              </AccordionPanel>
+            </AccordionItem>
+          );
+        })}
+      </Accordion>
+    </>
   );
 };
 

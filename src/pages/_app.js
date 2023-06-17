@@ -18,5 +18,6 @@ export default function App({
         </SessionProvider>
       </QueryClientProvider>
     </ChakraProvider>
+  
   );
 }

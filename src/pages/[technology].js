@@ -11,7 +11,7 @@ const Technology = () => {
   const route = useRouter();
   const { content, page } = route.query;
   return (
-    <Box>
+    <Box minH={'100vh'}>
       <Container maxW={"container.lg"}>
         <Flex
           justifyContent={"space-between"}
@@ -20,8 +20,8 @@ const Technology = () => {
           mb={2}
           p={5}
           px={10}
-          roundedBottomLeft={"2xl"}
-          roundedBottomRight={"2xl"}
+          h={'20vh'}
+          
         >
           <Heading fontWeight={"semibold"} fontSize={24} color="white">
             {content}
@@ -36,6 +36,9 @@ const Technology = () => {
             Go Back
           </Button>
         </Flex>
+
+
+
         {content === "CSS" ? (
           <Css />
         ) : content === "React" ? (

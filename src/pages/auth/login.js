@@ -19,7 +19,7 @@ import { useRouter } from "next/router";
 const Login = () => {
   const route = useRouter();
   const { data: session } = useSession();
-  console.log("session data", session);
+  // console.log("session data", session);
   if (session) {
     return (
       <>
