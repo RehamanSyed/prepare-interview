@@ -50,7 +50,7 @@ const Css = () => {
       await Fetcher.get("/allReactPost").then((res) => res.data),
   });
 
-  console.log("List data", data);
+  // console.log("List data", data);
 
   if (isLoading) return <Spinner />;
 
