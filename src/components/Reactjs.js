@@ -29,8 +29,12 @@ import {
 
 import { useQuery } from "@tanstack/react-query";
 import { Fetcher } from "client";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 const Reactjs = () => {
+  const route = useRouter();
+  const { data: session } = useSession();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isLoading, error, data } = useQuery({
     queryKey: ["techData"],
@@ -43,6 +47,9 @@ const Reactjs = () => {
 
   if (error) return "An error has occurred: " + error.message;
 
+  if (session === null) {
+    route.push("/auth/signin");
+  }
   return (
     <>
       <Box mt={-28} bg={"white"} p={10} rounded={"xl"} shadow={"2xl"}>
@@ -123,7 +130,7 @@ const Reactjs = () => {
               maxW={"container"}
               rounded={"3xl"}
               onClick={onOpen}
-                cursor={'pointer'}
+              cursor={"pointer"}
             >
               <Flex
                 minH={"50vh"}
@@ -131,7 +138,6 @@ const Reactjs = () => {
                 justifyContent={"center"}
                 alignItems={"center"}
                 gap={5}
-                
               >
                 <Image
                   src="./empty.png"
@@ -153,18 +159,31 @@ const Reactjs = () => {
         isOpen={isOpen}
         onClose={onClose}
         isCentered
-        motionPreset='slideInBottom'
-        size={'4xl'}
+        motionPreset="slideInBottom"
+        size={"4xl"}
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader fontWeight={'bold'} fontSize={14}>Add Your question and Answer</ModalHeader>
-          <ModalCloseButton border={'1px solid blue'} rounded={'full'} size={'sm'} color={'blue'} top={4} right={4}/>
+          <ModalHeader fontWeight={"bold"} fontSize={14}>
+            Add Your question and Answer
+          </ModalHeader>
+          <ModalCloseButton
+            border={"1px solid blue"}
+            rounded={"full"}
+            size={"sm"}
+            color={"blue"}
+            top={4}
+            right={4}
+          />
           <ModalBody>
             <form>
               <Flex flexDir={"column"} gap={5}>
                 <FormControl>
-                  <FormLabel fontWeight={"regular"} color={'gray.600'} fontSize={14}>
+                  <FormLabel
+                    fontWeight={"regular"}
+                    color={"gray.600"}
+                    fontSize={14}
+                  >
                     Enter the Technology Name
                   </FormLabel>
                   <Input type="Text" />
@@ -177,23 +196,41 @@ const Reactjs = () => {
                   </FormHelperText>
                 </FormControl>
                 <FormControl>
-                  <FormLabel fontWeight={"regular"} color={'gray.600'} fontSize={14}>
-                     Example Url ( Ex : CodeSandbox,  jsFiddle, StackBlitz, etc.,)
+                  <FormLabel
+                    fontWeight={"regular"}
+                    color={"gray.600"}
+                    fontSize={14}
+                  >
+                    Example Url ( Ex : CodeSandbox, jsFiddle, StackBlitz, etc.,)
                   </FormLabel>
                   <Input type="text" />
                 </FormControl>
                 <FormControl>
-                  <FormLabel fontWeight={"regular"} color={'gray.600'} fontSize={14}>
-                   Add relevent answer
+                  <FormLabel
+                    fontWeight={"regular"}
+                    color={"gray.600"}
+                    fontSize={14}
+                  >
+                    Add relevent answer
                   </FormLabel>
-                  <Textarea   size='sm' h={96} variant="outline"  colorScheme="red"/>
+                  <Textarea
+                    size="sm"
+                    h={96}
+                    variant="outline"
+                    colorScheme="red"
+                  />
                 </FormControl>
               </Flex>
             </form>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" variant={"outline"} mr={3} onClick={onClose}>
+            <Button
+              colorScheme="blue"
+              variant={"outline"}
+              mr={3}
+              onClick={onClose}
+            >
               Save Question
             </Button>
           </ModalFooter>

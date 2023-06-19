@@ -62,43 +62,27 @@ const Homepage = () => {
         </Box>
         <Container maxW={"container.lg"} mt={-32}>
           <Grid templateColumns="repeat(1, 1fr)" gap={3} mt={5} p={5}>
-            {data.map((item, idx) => {
-              return (
-                <GridItem
-                  colSpan={1}
-                  key={idx}
-                  h={96}
-                  bg={"gray.600"}
-                  textAlign={"center"}
-                  rounded="lg"
+            <GridItem
+              colSpan={4}
+              bg={"blue.600"}
+              textAlign={"center"}
+              rounded="lg"
+            >
+              <Flex
+                flexDir={"column"}
+                justifyContent={"center"}
+                color={"white"}
+                minH={"50vh"}
+              >
+                <Heading
+                  textTransform={"uppercase"}
+                  fontWeight="bold"
+                  size={"md"}
                 >
-                  <Link
-                    href={{
-                      pathname: `/${item.page}`,
-                      query: {
-                        content: `${item.technology}`,
-                        page: `${item.page}`,
-                      },
-                    }}
-                  >
-                    <Flex
-                      flexDir={"column"}
-                      justifyContent={"center"}
-                      color={"white"}
-                      minH={32}
-                    >
-                      <Heading
-                        textTransform={"uppercase"}
-                        fontWeight="bold"
-                        size={"md"}
-                      >
-                        {item.technology}
-                      </Heading>
-                    </Flex>
-                  </Link>
-                </GridItem>
-              );
-            })}
+                 Home Page Comming soon
+                </Heading>
+              </Flex>
+            </GridItem>
           </Grid>
         </Container>
       </Box>

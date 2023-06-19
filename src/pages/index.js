@@ -96,8 +96,7 @@ const Home = () => {
             {isLoading ? (
               <GridItem
                 colSpan={4}
-                key={190}
-                
+                key={190}                
                 bg={"white"}
                 shadow={'lg'}
                 textAlign={"center"}
