@@ -96,14 +96,20 @@ const Home = () => {
             {isLoading ? (
               <GridItem
                 colSpan={4}
-                key={190}                
+                key={190}
                 bg={"white"}
-                shadow={'lg'}
+                shadow={"lg"}
                 textAlign={"center"}
                 rounded="xl"
               >
-                <Flex minH={'50vh'} justifyContent={'center'} alignItems={'center'} flexDir={'column'} gap={2}>
-                  <Spinner color="red"/>
+                <Flex
+                  minH={"50vh"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                  flexDir={"column"}
+                  gap={2}
+                >
+                  <Spinner color="red" />
                   <Text fontSize={12}>Loading Data</Text>
                 </Flex>
               </GridItem>
@@ -205,7 +211,7 @@ const Home = () => {
                     color={"red.900"}
                     display={"none"}
                   >
-                    We'll never share your email.
+                    We will never share your email.
                   </FormHelperText>
                 </FormControl>
               </Flex>

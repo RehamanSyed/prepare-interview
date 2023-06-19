@@ -192,7 +192,7 @@ const Reactjs = () => {
                     color={"red.900"}
                     display={"none"}
                   >
-                    We'll never share your email.
+                    We will never share your email.
                   </FormHelperText>
                 </FormControl>
                 <FormControl>
