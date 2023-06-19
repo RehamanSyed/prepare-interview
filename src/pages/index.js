@@ -8,6 +8,20 @@ import {
   GridItem,
   Heading,
   Text,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Button,
+  Input,
+  Textarea,
+  FormControl,
+  FormHelperText,
+  FormLabel,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
@@ -32,6 +46,7 @@ export async function getServerSideProps(context) {
   };
 }
 const Home = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const route = useRouter();
   const { isLoading, error, data } = useQuery({
     queryKey: ["techData"],
@@ -84,7 +99,6 @@ const Home = () => {
                   key={idx}
                   h={32}
                   bg={"gray.600"}
-                 
                   textAlign={"center"}
                   rounded="lg"
                 >
@@ -97,7 +111,12 @@ const Home = () => {
                       },
                     }}
                   >
-                    <Flex flexDir={'column'} justifyContent={'center'} color={"white"} minH={32} >
+                    <Flex
+                      flexDir={"column"}
+                      justifyContent={"center"}
+                      color={"white"}
+                      minH={32}
+                    >
                       <Heading
                         textTransform={"uppercase"}
                         fontWeight="bold"
@@ -110,9 +129,76 @@ const Home = () => {
                 </GridItem>
               );
             })}
+            <GridItem
+              colSpan={1}
+              key={123}
+              h={32}
+              bg={"gray.100"}
+              border={"1px dashed gray"}
+              textAlign={"center"}
+              rounded="lg"
+              onClick={onOpen}
+              cursor={"pointer"}
+            >
+              <Flex
+                flexDir={"column"}
+                justifyContent={"center"}
+                color={"black"}
+                minH={32}
+              >
+                <Heading
+                  textTransform={"uppercase"}
+                  fontWeight="bold"
+                  size={"md"}
+                >
+                  Add Stack
+                </Heading>
+              </Flex>
+            </GridItem>
           </Grid>
         </Container>
       </Box>
+
+      <Modal
+        closeOnOverlayClick={false}
+        isOpen={isOpen}
+        onClose={onClose}
+        isCentered
+        motionPreset='slideInBottom'
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader fontWeight={'bold'} fontSize={14}>Add Stack to your list</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <form>
+              <Flex flexDir={"column"} gap={5}>
+                <FormControl>
+                  <FormLabel fontWeight={"thin"} fontSize={14}>
+                    Enter the Technology Name
+                  </FormLabel>
+                  <Input type="Text" />
+                  <FormHelperText
+                    fontSize={10}
+                    color={"red.900"}
+                    display={"none"}
+                  >
+                    We'll never share your email.
+                  </FormHelperText>
+                </FormControl>
+               
+               
+              </Flex>
+            </form>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 };
