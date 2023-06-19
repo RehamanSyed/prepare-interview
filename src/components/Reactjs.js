@@ -103,7 +103,7 @@ const Reactjs = () => {
                         as="a"
                         target="_blank"
                         variant={"link"}
-                        fontWeight={"light"}
+                        fontWeight={"medium"}
                         colorScheme={"blue"}
                         fontSize={14}
                         mt={5}
@@ -140,8 +140,8 @@ const Reactjs = () => {
                   filter="grayscale(50%)"
                   alt="no-image"
                 />
-                <Heading fontWeight={"light"} fontSize={20}>
-                  No Data available
+                <Heading fontWeight={"medium"} fontSize={20}>
+                  List your first Question and Answer
                 </Heading>
               </Flex>
             </Container>
@@ -154,16 +154,17 @@ const Reactjs = () => {
         onClose={onClose}
         isCentered
         motionPreset='slideInBottom'
+        size={'4xl'}
       >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader fontWeight={'bold'} fontSize={14}>Add Your question and Answer</ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton border={'1px solid blue'} rounded={'full'} size={'sm'} color={'blue'} top={4} right={4}/>
           <ModalBody>
             <form>
               <Flex flexDir={"column"} gap={5}>
                 <FormControl>
-                  <FormLabel fontWeight={"thin"} fontSize={14}>
+                  <FormLabel fontWeight={"regular"} color={'gray.600'} fontSize={14}>
                     Enter the Technology Name
                   </FormLabel>
                   <Input type="Text" />
@@ -176,24 +177,24 @@ const Reactjs = () => {
                   </FormHelperText>
                 </FormControl>
                 <FormControl>
-                  <FormLabel fontWeight={"light"} fontSize={14}>
-                    Enter if you have any example (Url)
+                  <FormLabel fontWeight={"regular"} color={'gray.600'} fontSize={14}>
+                     Example Url ( Ex : CodeSandbox,  jsFiddle, StackBlitz, etc.,)
                   </FormLabel>
                   <Input type="text" />
                 </FormControl>
                 <FormControl>
-                  <FormLabel fontWeight={"light"} fontSize={14}>
+                  <FormLabel fontWeight={"regular"} color={'gray.600'} fontSize={14}>
                    Add relevent answer
                   </FormLabel>
-                  <Textarea placeholder="Basic usage" />
+                  <Textarea   size='sm' h={96} variant="outline"  colorScheme="red"/>
                 </FormControl>
               </Flex>
             </form>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
-              Close
+            <Button colorScheme="blue" variant={"outline"} mr={3} onClick={onClose}>
+              Save Question
             </Button>
           </ModalFooter>
         </ModalContent>

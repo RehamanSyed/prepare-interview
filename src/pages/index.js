@@ -22,6 +22,7 @@ import {
   FormControl,
   FormHelperText,
   FormLabel,
+  Spinner,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
@@ -60,7 +61,7 @@ const Home = () => {
   if (session === null) {
     route.push("/auth/signin");
   }
-  if (isLoading) return "Loading...";
+
   if (error) return "An error has occurred: " + error.message;
   return (
     <>
@@ -92,69 +93,89 @@ const Home = () => {
         </Box>
         <Container maxW={"container.lg"} mt={-32}>
           <Grid templateColumns="repeat(4, 1fr)" gap={3} mt={5} p={5}>
-            {data.map((item, idx) => {
-              return (
+            {isLoading ? (
+              <GridItem
+                colSpan={4}
+                key={190}
+                
+                bg={"white"}
+                shadow={'lg'}
+                textAlign={"center"}
+                rounded="xl"
+              >
+                <Flex minH={'50vh'} justifyContent={'center'} alignItems={'center'} flexDir={'column'} gap={2}>
+                  <Spinner color="red"/>
+                  <Text fontSize={12}>Loading Data</Text>
+                </Flex>
+              </GridItem>
+            ) : (
+              <>
+                {data.map((item, idx) => {
+                  return (
+                    <GridItem
+                      colSpan={1}
+                      key={idx}
+                      h={32}
+                      bg={"gray.600"}
+                      textAlign={"center"}
+                      rounded="lg"
+                    >
+                      <Link
+                        href={{
+                          pathname: `/${item.page}`,
+                          query: {
+                            content: `${item.technology}`,
+                            page: `${item.page}`,
+                          },
+                        }}
+                      >
+                        <Flex
+                          flexDir={"column"}
+                          justifyContent={"center"}
+                          color={"white"}
+                          minH={32}
+                        >
+                          <Heading
+                            textTransform={"uppercase"}
+                            fontWeight="bold"
+                            size={"md"}
+                          >
+                            {item.technology}
+                          </Heading>
+                        </Flex>
+                      </Link>
+                    </GridItem>
+                  );
+                })}
+
                 <GridItem
                   colSpan={1}
-                  key={idx}
+                  key={123}
                   h={32}
-                  bg={"gray.600"}
+                  bg={"gray.100"}
+                  border={"1px dashed gray"}
                   textAlign={"center"}
                   rounded="lg"
+                  onClick={onOpen}
+                  cursor={"pointer"}
                 >
-                  <Link
-                    href={{
-                      pathname: `/${item.page}`,
-                      query: {
-                        content: `${item.technology}`,
-                        page: `${item.page}`,
-                      },
-                    }}
+                  <Flex
+                    flexDir={"column"}
+                    justifyContent={"center"}
+                    color={"black"}
+                    minH={32}
                   >
-                    <Flex
-                      flexDir={"column"}
-                      justifyContent={"center"}
-                      color={"white"}
-                      minH={32}
+                    <Heading
+                      textTransform={"uppercase"}
+                      fontWeight="bold"
+                      size={"md"}
                     >
-                      <Heading
-                        textTransform={"uppercase"}
-                        fontWeight="bold"
-                        size={"md"}
-                      >
-                        {item.technology}
-                      </Heading>
-                    </Flex>
-                  </Link>
+                      Add Stack
+                    </Heading>
+                  </Flex>
                 </GridItem>
-              );
-            })}
-            <GridItem
-              colSpan={1}
-              key={123}
-              h={32}
-              bg={"gray.100"}
-              border={"1px dashed gray"}
-              textAlign={"center"}
-              rounded="lg"
-              onClick={onOpen}
-              cursor={"pointer"}
-            >
-              <Flex
-                flexDir={"column"}
-                justifyContent={"center"}
-                color={"black"}
-                minH={32}
-              >
-                <Heading
-                  textTransform={"uppercase"}
-                  fontWeight="bold"
-                  size={"md"}
-                >
-                  Add Stack
-                </Heading>
-              </Flex>
-            </GridItem>
+              </>
+            )}
           </Grid>
         </Container>
       </Box>
@@ -164,11 +185,13 @@ const Home = () => {
         isOpen={isOpen}
         onClose={onClose}
         isCentered
-        motionPreset='slideInBottom'
+        motionPreset="slideInBottom"
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader fontWeight={'bold'} fontSize={14}>Add Stack to your list</ModalHeader>
+          <ModalHeader fontWeight={"bold"} fontSize={14}>
+            Add Stack to your list
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <form>
@@ -186,8 +209,6 @@ const Home = () => {
                     We'll never share your email.
                   </FormHelperText>
                 </FormControl>
-               
-               
               </Flex>
             </form>
           </ModalBody>
