@@ -88,7 +88,7 @@ const Home = () => {
         <Box w={"100%"} bg={"gray.100"}>
           <Container maxW={"container.sm"}>
             <Flex
-              minHeight={"50vh"}
+              minHeight={{ base: "60vh", lg: "50vh" }}
               flexDir={"column"}
               justifyContent={"center"}
               alignItems={"center"}
@@ -103,11 +103,16 @@ const Home = () => {
             </Flex>
           </Container>
         </Box>
-        <Container maxW={"container.lg"} mt={-32}>
-          <Grid templateColumns="repeat(4, 1fr)" gap={3} mt={5} p={5}>
+        <Container maxW={"container.lg"} mt={[-24, -32]}>
+          <Grid
+            templateColumns="repeat(4, 1fr)"
+            gap={3}
+            mt={[10, 5]}
+            p={[0, 5]}
+          >
             {isLoading ? (
               <GridItem
-                colSpan={4}
+                colSpan={[4, 4, 4, 4]}
                 key={190}
                 bg={"white"}
                 shadow={"lg"}
@@ -130,7 +135,7 @@ const Home = () => {
                 {data.map((item, idx) => {
                   return (
                     <GridItem
-                      colSpan={[2, 3, 2, 1]}
+                      colSpan={[2, 2, 1, 1, 1]}
                       key={idx}
                       h={32}
                       bg={"gray.600"}
@@ -166,7 +171,7 @@ const Home = () => {
                 })}
 
                 <GridItem
-                  colSpan={1}
+                  colSpan={[4, 4, 1, 1, 1]}
                   key={123}
                   h={32}
                   bg={"gray.100"}
