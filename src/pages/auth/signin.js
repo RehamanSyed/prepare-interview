@@ -49,7 +49,15 @@ const SignIn = ({ csrfToken }) => {
   }
   return (
     <Box>
-      <Container maxW={"20%"}>
+      <Container
+        maxW={{
+          base: "90%",
+          sm: "70%",
+          md: "50%",
+          lg: "40%",
+          xl: "30%",
+        }}
+      >
         <Stack
           spacing={4}
           minH={"calc(100vh)"}
@@ -62,19 +70,24 @@ const SignIn = ({ csrfToken }) => {
             fontSize={"3xl"}
             textAlign={"center"}
           >
-            Login
+            Please Login
           </Heading>
-          <Flex gap={3}>
-            <Button colorScheme="facebook" onClick={googleHandler}>
+          <Flex gap={3} width="100%">
+            <Button colorScheme="facebook" width="full" onClick={googleHandler}>
               Google
             </Button>
-            <Button colorScheme="twitter" onClick={githubHandler}>
+            <Button colorScheme="twitter" width="full" onClick={githubHandler}>
               GitHub
             </Button>
           </Flex>
           <Divider my={10} />
           <form onSubmit={loginHandler} style={{ width: "100%" }}>
-            <Flex justifyContent={"center"} flexDirection={"column"} gap={5}>
+            <Flex
+              justifyContent={"center"}
+              w={"full"}
+              flexDirection={"column"}
+              gap={5}
+            >
               <InputGroup>
                 <InputLeftElement pointerEvents="none">
                   <AiOutlineUser color="gray.300" />
@@ -83,6 +96,7 @@ const SignIn = ({ csrfToken }) => {
                   type="email"
                   bg={"gray.50"}
                   fontSize={14}
+                  w={"full"}
                   placeholder="Enter your username"
                   value={inputVal}
                   onChange={(e) => setInputVal(e.target.value)}
@@ -98,6 +112,7 @@ const SignIn = ({ csrfToken }) => {
                   type="password"
                   value={passwordVal}
                   bg={"gray.50"}
+                  w={"full"}
                   fontSize={14}
                   onChange={(e) => setPasswordVal(e.target.value)}
                   placeholder="Enter your password"
@@ -108,7 +123,7 @@ const SignIn = ({ csrfToken }) => {
               </InputGroup>
               <Button
                 type="submit"
-                variant={"solid"}
+                variant={"outline"}
                 colorScheme="messenger"
                 width={"100%"}
               >
