@@ -43,6 +43,11 @@ const Reactjs = () => {
   });
 
   console.log("List data", data);
+
+  const addQuestionHandler = () => {
+    console.log("you click on modal");
+  };
+
   if (isLoading) return <Spinner />;
 
   if (error) return "An error has occurred: " + error.message;
@@ -153,6 +158,19 @@ const Reactjs = () => {
             </Container>
           )}
         </Accordion>
+        <Box>
+          <Button
+            w={"100%"}
+            variant={"solid"}
+            colorScheme={"linkedin"}
+            rounded={"2xl"}
+            p={5}
+            h={14}
+            onClick={() => addQuestionHandler()}
+          >
+            ADD NEW QUESTION
+          </Button>
+        </Box>
       </Box>
       <Modal
         closeOnOverlayClick={false}
