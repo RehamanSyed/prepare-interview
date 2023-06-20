@@ -51,6 +51,7 @@ export async function getServerSideProps(context) {
 const Home = () => {
   const [inptValue, setInptValue] = useState();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { data: session } = useSession();
   const { createMutation } = useCreateStack();
   const route = useRouter();
   const { isLoading, error, data } = useQuery({
@@ -60,19 +61,17 @@ const Home = () => {
         .then((res) => res.data)
         .catch((error) => console.log(error)),
   });
-  const { data: session } = useSession();
+
   // console.log("session data", session);
 
   const onSubmitHandler = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     console.log("you clicked", inptValue);
     createMutation.mutate(inptValue);
-    onClose()
-
+    onClose();
   };
-  if (session === null) {
-    route.push("/auth/signin");
-  }
+
+  if (session === null) route.push("/auth/signin");
   if (error) return "An error has occurred: " + error.message;
 
   return (
