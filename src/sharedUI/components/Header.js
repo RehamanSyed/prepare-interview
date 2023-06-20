@@ -31,9 +31,11 @@ const CommonHeader = () => {
         <Container maxW={"container.xl"}>
           <Flex justifyContent={"space-between"} alignItems={"center"}>
             <Box>
-              <Heading fontSize={20} fontWeight="extrabold">
-                Interview Warmup
-              </Heading>
+              <Link href="/">
+                <Heading fontSize={20} fontWeight="extrabold">
+                  Interview Warmup
+                </Heading>
+              </Link>
             </Box>
             <Box>
               <UnorderedList
@@ -42,11 +44,11 @@ const CommonHeader = () => {
                 listStyleType={"none"}
               >
                 <ListItem>
-                  <Link href={"/"}>Profile</Link>
+                  <Link href={"/user-profile"}>Profile</Link>
                 </ListItem>
                 <ListItem>
                   {" "}
-                  <Link href={"/"}>MockTest</Link>
+                  <Link href={"/mocktest"}>MockTest</Link>
                 </ListItem>
                 <ListItem>
                   <Button
@@ -92,10 +94,10 @@ const CommonHeader = () => {
               listStyleType={"none"}
             >
               <ListItem>
-                <Link href={"/"}>Profile</Link>
+                <Link href={"/user-profile"}>Profile</Link>
               </ListItem>
               <ListItem>
-                <Link href={"/"}>MockTest</Link>
+                <Link href={"/mocktest"}>MockTest</Link>
               </ListItem>
               <ListItem>
                 <Button
