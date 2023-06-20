@@ -118,7 +118,7 @@ const Home = () => {
                 {data.map((item, idx) => {
                   return (
                     <GridItem
-                      colSpan={1}
+                      colSpan={[2,3,2, 1]}
                       key={idx}
                       h={32}
                       bg={"gray.600"}
