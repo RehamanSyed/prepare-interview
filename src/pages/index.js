@@ -31,6 +31,8 @@ import { getSession, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { Fetcher } from "client";
 import MainLayout from "@/layouts/main.layout";
+import { useCreateStack } from "@/modules/homepage/hooks/useStack";
+import { useState } from "react";
 export async function getServerSideProps(context) {
   const { req, res } = context;
   const session = await getSession({ req });
@@ -47,7 +49,10 @@ export async function getServerSideProps(context) {
   };
 }
 const Home = () => {
+  const [inptValue, setInptValue] = useState();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { data: session } = useSession();
+  const { createMutation } = useCreateStack();
   const route = useRouter();
   const { isLoading, error, data } = useQuery({
     queryKey: ["techData"],
@@ -56,13 +61,19 @@ const Home = () => {
         .then((res) => res.data)
         .catch((error) => console.log(error)),
   });
-  const { data: session } = useSession();
-  // console.log("session data", session);
-  if (session === null) {
-    route.push("/auth/signin");
-  }
 
+  // console.log("session data", session);
+
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    console.log("you clicked", inptValue);
+    createMutation.mutate(inptValue);
+    onClose();
+  };
+
+  if (session === null) route.push("/auth/signin");
   if (error) return "An error has occurred: " + error.message;
+
   return (
     <>
       <Head>
@@ -198,19 +209,22 @@ const Home = () => {
         motionPreset="slideInBottom"
       >
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader fontWeight={"bold"} fontSize={14}>
-            Add Stack to your list
-          </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <form>
+        <form onSubmit={onSubmitHandler}>
+          <ModalContent>
+            <ModalHeader fontWeight={"bold"} fontSize={14}>
+              Add Stack to your list
+            </ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
               <Flex flexDir={"column"} gap={5}>
                 <FormControl>
                   <FormLabel fontWeight={"thin"} fontSize={14}>
                     Enter the Technology Name
                   </FormLabel>
-                  <Input type="Text" />
+                  <Input
+                    type="Text"
+                    onChange={(e) => setInptValue(e.target.value)}
+                  />
                   <FormHelperText
                     fontSize={10}
                     color={"red.900"}
@@ -220,15 +234,15 @@ const Home = () => {
                   </FormHelperText>
                 </FormControl>
               </Flex>
-            </form>
-          </ModalBody>
+            </ModalBody>
 
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3} type="submit">
+                Add Stack
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </form>
       </Modal>
     </>
   );

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Container,
@@ -32,28 +32,44 @@ import { Fetcher } from "client";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { Editor } from "@tinymce/tinymce-react";
+import { useCreateQuestion } from "@/modules/technology/hooks/useReactJs";
+
 const Reactjs = () => {
   const route = useRouter();
   const { data: session } = useSession();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { createMutation } = useCreateQuestion();
+  const [techquestion, setTechQuestion] = useState();
+  const [techUrl, setTechUrl] = useState();
+  const [techanswer, setTechAnswer] = useState();
   const { isLoading, error, data } = useQuery({
     queryKey: ["techData"],
     queryFn: async () =>
       await Fetcher.get("/allReactPost").then((res) => res.data),
   });
 
-  console.log("List data", data);
+  const addQuestionHandler = () => {
+    onOpen();
+  };
+
+  const submitQuestionHandler = (e) => {
+    e.preventDefault();
+    let formData = {
+      question: techquestion,
+      example: techUrl,
+      answer: techanswer,
+    };
+    createMutation.mutate(formData);
+  };
+
   if (isLoading) return <Spinner />;
-
   if (error) return "An error has occurred: " + error.message;
+  if (session === null) return route.push("/auth/signin");
 
-  if (session === null) {
-    route.push("/auth/signin");
-  }
   return (
     <>
       <Box mt={-28} bg={"white"} p={10} rounded={"xl"} shadow={"2xl"}>
-        <Accordion allowMultiple>
+        <Accordion>
           {data &&
             data.map((item, idx) => {
               return (
@@ -153,6 +169,19 @@ const Reactjs = () => {
             </Container>
           )}
         </Accordion>
+
+        <Button
+          w={"100%"}
+          variant={"solid"}
+          colorScheme={"linkedin"}
+          rounded={"2xl"}
+          p={5}
+          h={14}
+          type="button"
+          onClick={addQuestionHandler}
+        >
+          ADD NEW QUESTION
+        </Button>
       </Box>
       <Modal
         closeOnOverlayClick={false}
@@ -175,8 +204,8 @@ const Reactjs = () => {
             top={4}
             right={4}
           />
-          <ModalBody>
-            <form>
+          <form onSubmit={submitQuestionHandler}>
+            <ModalBody>
               <Flex flexDir={"column"} gap={5}>
                 <FormControl>
                   <FormLabel
@@ -186,7 +215,11 @@ const Reactjs = () => {
                   >
                     Enter the Technology Name
                   </FormLabel>
-                  <Input type="Text" />
+
+                  <Input
+                    type="Text"
+                    onChange={(e) => setTechQuestion(e.target.value)}
+                  />
                   <FormHelperText
                     fontSize={10}
                     color={"red.900"}
@@ -203,7 +236,10 @@ const Reactjs = () => {
                   >
                     Example Url ( Ex : CodeSandbox, jsFiddle, StackBlitz, etc.,)
                   </FormLabel>
-                  <Input type="text" />
+                  <Input
+                    type="text"
+                    onChange={(e) => setTechUrl(e.target.value)}
+                  />
                 </FormControl>
                 <FormControl>
                   <FormLabel
@@ -254,22 +290,23 @@ const Reactjs = () => {
                     h={96}
                     variant="outline"
                     colorScheme="red"
+                    onChange={(e) => setTechAnswer(e.target.value)}
                   />
                 </FormControl>
               </Flex>
-            </form>
-          </ModalBody>
+            </ModalBody>
 
-          <ModalFooter>
-            <Button
-              colorScheme="blue"
-              variant={"outline"}
-              mr={3}
-              onClick={onClose}
-            >
-              Save Question
-            </Button>
-          </ModalFooter>
+            <ModalFooter>
+              <Button
+                colorScheme="blue"
+                variant={"outline"}
+                mr={3}
+                type="submit"
+              >
+                Save Question
+              </Button>
+            </ModalFooter>
+          </form>
         </ModalContent>
       </Modal>
     </>
