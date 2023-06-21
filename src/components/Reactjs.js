@@ -31,7 +31,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Fetcher } from "client";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-
+import { Editor } from "@tinymce/tinymce-react";
 const Reactjs = () => {
   const route = useRouter();
   const { data: session } = useSession();
@@ -213,6 +213,42 @@ const Reactjs = () => {
                   >
                     Add relevent answer
                   </FormLabel>
+
+                  <Editor
+                    apiKey={"9e6zrt6tjm44ammn80f49rlcqhidyil1q1azncfys7a3f6z1"}
+                    // onEditorChange={onChange}
+                    init={{
+                      skin: "oxide-dark",
+                      content_css: "dark",
+                      height: 400,
+                      menubar: false,
+                      plugins: [
+                        "advlist",
+                        "autolink",
+                        "lists",
+                        "link",
+                        "image",
+                        "charmap",
+                        "anchor",
+                        "searchreplace",
+                        "visualblocks",
+                        "code",
+                        "insertdatetime",
+                        "media",
+                        "table",
+                        "preview",
+                        "help",
+                        "wordcount",
+                      ],
+                      toolbar:
+                        "undo redo | blocks | " +
+                        "bold italic forecolor | alignleft aligncenter " +
+                        "alignright alignjustify | bullist numlist outdent indent | " +
+                        "removeformat | help",
+                      content_style:
+                        "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                    }}
+                  />
                   <Textarea
                     size="sm"
                     h={96}
