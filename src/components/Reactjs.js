@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   Box,
   Container,
@@ -35,6 +35,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import { useCreateQuestion } from "@/modules/technology/hooks/useReactJs";
 
 const Reactjs = () => {
+  const editorRef = useRef(null);
   const route = useRouter();
   const { data: session } = useSession();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -42,6 +43,8 @@ const Reactjs = () => {
   const [techquestion, setTechQuestion] = useState();
   const [techUrl, setTechUrl] = useState();
   const [techanswer, setTechAnswer] = useState();
+
+  const editorKey = process.env.NEXTEDITOR_TINY;
   const { isLoading, error, data } = useQuery({
     queryKey: ["techData"],
     queryFn: async () =>
@@ -54,11 +57,13 @@ const Reactjs = () => {
 
   const submitQuestionHandler = (e) => {
     e.preventDefault();
+
     let formData = {
       question: techquestion,
       example: techUrl,
-      answer: techanswer,
+      answer: editorRef.current.getContent(),
     };
+    console.log("formdata", formData);
     createMutation.mutate(formData);
   };
 
@@ -251,8 +256,9 @@ const Reactjs = () => {
                   </FormLabel>
 
                   <Editor
-                    apiKey={"9e6zrt6tjm44ammn80f49rlcqhidyil1q1azncfys7a3f6z1"}
-                    // onEditorChange={onChange}
+                    apiKey={editorKey}
+                    // onChange={(e) => setTechAnswer(e.target.value)}
+                    onInit={(event, editor) => (editorRef.current = editor)}
                     init={{
                       skin: "oxide-dark",
                       content_css: "dark",
@@ -285,13 +291,13 @@ const Reactjs = () => {
                         "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
                     }}
                   />
-                  <Textarea
+                  {/* <Textarea
                     size="sm"
-                    h={96}
+                    h={10}
                     variant="outline"
                     colorScheme="red"
                     onChange={(e) => setTechAnswer(e.target.value)}
-                  />
+                  /> */}
                 </FormControl>
               </Flex>
             </ModalBody>
