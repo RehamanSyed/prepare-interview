@@ -6,7 +6,7 @@ export const useCreateQuestion = () => {
   const createMutation = useMutation({
     mutationKey: ["createTech"],
     mutationFn: async (formData) => {
-      const result = await Fetcher.post(`createReactPost`, formData);
+      const result = await Fetcher.post(`/createPost`, formData);
       return result;
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["techData"] }),

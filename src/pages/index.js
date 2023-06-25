@@ -57,12 +57,10 @@ const Home = () => {
   const { isLoading, error, data } = useQuery({
     queryKey: ["techData"],
     queryFn: async () =>
-      await Fetcher.get("/alltech")
+      await Fetcher.get("/allTech")
         .then((res) => res.data)
         .catch((error) => console.log(error)),
   });
-
-  // console.log("session data", session);
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
@@ -131,7 +129,7 @@ const Home = () => {
               </GridItem>
             ) : (
               <>
-                {data.map((item, idx) => {
+                {data?.techData?.map((item, idx) => {
                   return (
                     <GridItem
                       colSpan={[2, 2, 1, 1, 1]}
@@ -145,8 +143,9 @@ const Home = () => {
                         href={{
                           pathname: `/${item.page}`,
                           query: {
-                            content: `${item.technology}`,
-                            page: `${item.page}`,
+                            tid: `${item._id}`,
+                            uid: `646b7644abf92e2043abf5ba`,
+                            tech: `${item.page}`,
                           },
                         }}
                       >
@@ -169,7 +168,7 @@ const Home = () => {
                   );
                 })}
 
-                <GridItem
+                {/* <GridItem
                   colSpan={[4, 4, 1, 1, 1]}
                   key={123}
                   h={32}
@@ -194,7 +193,7 @@ const Home = () => {
                       Add Stack
                     </Heading>
                   </Flex>
-                </GridItem>
+                </GridItem> */}
               </>
             )}
           </Grid>

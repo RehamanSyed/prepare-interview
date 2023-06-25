@@ -1,17 +1,24 @@
-import Css from "@/components/Css";
-import GeneralQuestions from "@/components/GeneralQuestions";
-import Git from "@/components/Git";
-import Html from "@/components/Html";
-import Javascript from "@/components/Javascript";
-import Nextjs from "@/components/Nextjs";
-import Reactjs from "@/components/Reactjs";
+import { useRouter } from "next/router";
+import { Fetcher } from "client";
+import Post from "@/components/Post";
 import MainLayout from "@/layouts/main.layout";
 import { Box, Container, Heading, Button, Flex, Text } from "@chakra-ui/react";
-import { useRouter } from "next/router";
+import { useQuery } from "@tanstack/react-query";
 
 const Technology = () => {
   const route = useRouter();
-  const { content, page } = route.query;
+  const { tech, tid, uid } = route.query;
+  const { isLoading, error, data } = useQuery({
+    queryKey: ["techData"],
+    queryFn: async () =>
+      await Fetcher.get("/allPost", {
+        techId: tid,
+        userId: uid,
+      }).then((res) => res.data),
+  });
+
+  console.log("post Data", data);
+
   return (
     <Box minH={"100vh"} bg={"white"}>
       <Box w={"100%"} bg={"gray.100"}>
@@ -23,7 +30,7 @@ const Technology = () => {
             alignItems={"center"}
             gap={5}
           >
-            <Heading>{content} WarmUp</Heading>
+            <Heading>{tech} WarmUp</Heading>
             <Text textAlign={"center"}>
               A quick way to prepare for your next interview. Practice key
               questions, get insights about your answers, and get more
@@ -43,20 +50,20 @@ const Technology = () => {
         </Container>
       </Box>
       <Container maxW={"container.lg"}>
-        {content === "CSS" ? (
-          <Css />
-        ) : content === "React" ? (
-          <Reactjs />
-        ) : content === "Javascript" ? (
-          <Javascript />
-        ) : content === "Html" ? (
-          <Html />
-        ) : content === "NextJs" ? (
-          <Nextjs />
-        ) : content === "Git" ? (
-          <Git />
-        ): content === "General Questions" ? (
-          <GeneralQuestions />
+        {tech === "Css" ||
+        tech === "Reactjs" ||
+        tech === "Javascript" ||
+        tech === "Html" ||
+        tech === "NextJs" ||
+        tech === "GitHub" ||
+        tech === "Interview Question" ? (
+          <Post
+            data={data}
+            isLoading={isLoading}
+            error={error}
+            techId={tid}
+            userId={uid}
+          />
         ) : (
           ""
         )}

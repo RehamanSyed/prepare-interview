@@ -27,14 +27,13 @@ import {
   FormLabel,
 } from "@chakra-ui/react";
 
-import { useQuery } from "@tanstack/react-query";
-import { Fetcher } from "client";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useCreateQuestion } from "@/modules/technology/hooks/useReactJs";
 
-const Reactjs = () => {
+const Post = ({ data, isLoading, error, techId, userId }) => {
+  // console.log("data in Post Component ==>: ", data);
   const editorRef = useRef(null);
   const route = useRouter();
   const { data: session } = useSession();
@@ -42,14 +41,8 @@ const Reactjs = () => {
   const { createMutation } = useCreateQuestion();
   const [techquestion, setTechQuestion] = useState();
   const [techUrl, setTechUrl] = useState();
-  const [techanswer, setTechAnswer] = useState();
 
   const editorKey = process.env.NEXTEDITOR_TINY;
-  const { isLoading, error, data } = useQuery({
-    queryKey: ["techData"],
-    queryFn: async () =>
-      await Fetcher.get("/allReactPost").then((res) => res.data),
-  });
 
   const addQuestionHandler = () => {
     onOpen();
@@ -57,13 +50,15 @@ const Reactjs = () => {
 
   const submitQuestionHandler = (e) => {
     e.preventDefault();
-
     let formData = {
+      userId: userId,
+      techId: techId,
       question: techquestion,
       example: techUrl,
       answer: editorRef.current.getContent(),
     };
     console.log("formdata", formData);
+
     createMutation.mutate(formData);
   };
 
@@ -104,7 +99,7 @@ const Reactjs = () => {
                   <AccordionPanel p={5}>
                     <Box
                       dangerouslySetInnerHTML={{
-                        __html: DomPurify.sanitize(item.answer),
+                        __html: item.answer,
                       }}
                       sx={{
                         "& div": {
@@ -321,4 +316,4 @@ const Reactjs = () => {
   );
 };
 
-export default Reactjs;
+export default Post;

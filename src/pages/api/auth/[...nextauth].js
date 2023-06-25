@@ -20,13 +20,12 @@ export const authOptions = {
       async authorize(credentials, req) {
         console.log("credentials", credentials);
         const { email, password } = credentials;
-        const response = await Fetcher.post("/user/login", {
+        const response = await Fetcher.post("/login", {
           email: credentials.email,
           password: credentials.password,
         });
         let result = await response.data;
-        console.log("reuslt ", result);
-
+        console.log("reuslt @ credentials--> ", result);
         if (email !== result.user.email || password !== result.user.password) {
           throw new Error("Invalid credentials");
         }
@@ -34,11 +33,11 @@ export const authOptions = {
       },
     }),
   ],
-  secret:process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signin: "/auth/signin",
     signout: "/auth/signout",
-    error:"/auth/error"
+    error: "/auth/error",
   },
   session: {
     strategy: "jwt",

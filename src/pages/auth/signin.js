@@ -23,8 +23,9 @@ export async function getServerSideProps(context) {
   };
 }
 const SignIn = ({ csrfToken }) => {
-  const [inputVal, setInputVal] = useState("test@gmail.com");
-  const [passwordVal, setPasswordVal] = useState("12345");
+  console.log(csrfToken);
+  const [inputVal, setInputVal] = useState("syed@gmail.com");
+  const [passwordVal, setPasswordVal] = useState("123456");
   const route = useRouter();
   const { data: session } = useSession();
   //   console.log("session data", session);
@@ -36,7 +37,7 @@ const SignIn = ({ csrfToken }) => {
       password: passwordVal,
       redirect: false,
     });
-    // console.log("result", result);
+    console.log("result @ signin page", result);
   };
   const googleHandler = async (e) => {
     signIn("google", { callbackUrl: "http://localhost:3000/" });
