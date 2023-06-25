@@ -16,31 +16,25 @@ import {
 } from "@chakra-ui/react";
 import { Fetcher } from "client";
 import { useQuery } from "@tanstack/react-query";
-const content = [
-  {
-    question: "1. What is JavaScript ?",
-    description:
-      "React is a open source javaScript library for building single  page user interfaces. It allows us to create reusable UI    components. Under the hood, react use a Virtual Dom, which will   efficiently update and render when every data changes",
-    example: "",
-  },
-  {
-    question: "2. what is virtural Dom?",
-    description: `<p> It's a <strong>lightweight</strong> representation of the actual DOM, which is a tree-like structure that represents the HTML content of a web page.</p>
-    <p>When a change occurs, React calculates the difference between the old Virtual DOM and the new Virtual DOM, and updates only the parts that have changed. This is known as "reconciliation" and it can save a lot of time and resources compared to updating the actual DOM every time a change occurs. </p>
-     <p>In summary, the Virtual DOM is a key feature of React that helps make it a fast and efficient library for building web applications.</p>
-    
-`,
-    example: "",
-  },
-];
+
 const Javascript = () => {
   const { isLoading, error, data } = useQuery({
     queryKey: ["techData"],
     queryFn: async () =>
-      await Fetcher.get("/allReactPost").then((res) => res.data),
+      await Fetcher.get("/javascript/allPost").then((res) => res.data),
   });
 
   console.log("List data", data);
+
+  const editHandler = (item) => {
+    console.log("you clicked me", item);
+  };
+  const deleteHandler = (id) => {    
+    console.log("you clicked me Delete", id);
+    
+
+  };
+
   if (isLoading) return <Spinner />;
 
   if (error) return "An error has occurred: " + error.message;
@@ -94,22 +88,46 @@ const Javascript = () => {
                       },
                     }}
                   ></Box>
-                  {item.example === null ? (
-                    ""
-                  ) : (
-                    <Button
-                      as="a"
-                      target="_blank"
-                      variant={"link"}
-                      fontWeight={"light"}
-                      colorScheme={"blue"}
-                      fontSize={14}
-                      mt={5}
-                      href={item.example}
-                    >
-                      See the Example
-                    </Button>
-                  )}
+                  <Flex justifyContent={"space-between"} mt={5}>
+                      <Button
+                        as="a"
+                        target="_blank"
+                        variant={"link"}
+                        fontWeight={"light"}
+                        colorScheme={"blue"}
+                        fontSize={14}
+                        href={item.example}
+                      >
+                        See the Example
+                      </Button>
+                      <Flex gap={5}>
+                        <Button
+                          as="a"
+                          target="_blank"
+                          variant={"link"}
+                          _hover={{
+                            textDecor: "none",
+                          }}
+                          fontSize={14}
+                          onClick={()=>editHandler(item._id)}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          as="a"
+                          target="_blank"
+                          variant={"link"}
+                          colorScheme={"red"}
+                          fontSize={14}
+                          _hover={{
+                            textDecor: "none",
+                          }}
+                          onClick={() => deleteHandler(item._id)}
+                        >
+                          Delete
+                        </Button>
+                      </Flex>
+                    </Flex>
                 </AccordionPanel>
               </AccordionItem>
             );

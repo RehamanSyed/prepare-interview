@@ -220,7 +220,7 @@ const Reactjs = () => {
                     color={"gray.600"}
                     fontSize={14}
                   >
-                    Enter the Technology Name
+                    Add your question.
                   </FormLabel>
 
                   <Input
@@ -264,8 +264,8 @@ const Reactjs = () => {
                     init={{
                       skin: "oxide-dark",
                       content_css: "dark",
-                      height: 400,
-                      menubar: false,
+                      height: 300,
+                      menubar: true,
                       plugins: [
                         "advlist",
                         "autolink",

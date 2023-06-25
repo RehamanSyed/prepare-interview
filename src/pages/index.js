@@ -57,7 +57,7 @@ const Home = () => {
   const { isLoading, error, data } = useQuery({
     queryKey: ["techData"],
     queryFn: async () =>
-      await Fetcher.get("alltech")
+      await Fetcher.get("/alltech")
         .then((res) => res.data)
         .catch((error) => console.log(error)),
   });
