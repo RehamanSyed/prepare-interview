@@ -1,4 +1,6 @@
 import Css from "@/components/Css";
+import GeneralQuestions from "@/components/GeneralQuestions";
+import Git from "@/components/Git";
 import Html from "@/components/Html";
 import Javascript from "@/components/Javascript";
 import Nextjs from "@/components/Nextjs";
@@ -15,7 +17,7 @@ const Technology = () => {
       <Box w={"100%"} bg={"gray.100"}>
         <Container maxW={"container.sm"}>
           <Flex
-            minHeight={"50vh"}
+            height={"50vh"}
             flexDir={"column"}
             justifyContent={"center"}
             alignItems={"center"}
@@ -51,6 +53,10 @@ const Technology = () => {
           <Html />
         ) : content === "NextJs" ? (
           <Nextjs />
+        ) : content === "Git" ? (
+          <Git />
+        ): content === "General Questions" ? (
+          <GeneralQuestions />
         ) : (
           ""
         )}
