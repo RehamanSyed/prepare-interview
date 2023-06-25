@@ -71,7 +71,9 @@ const Javascript = () => {
                 </AccordionButton>
                 <AccordionPanel p={5}>
                   <Box
-                    dangerouslySetInnerHTML={{ __html: item.answer }}
+                    dangerouslySetInnerHTML={{
+                      __html: DomPurify.sanitize(item.answer),
+                    }}
                     sx={{
                       "& div": {
                         color: "black",
