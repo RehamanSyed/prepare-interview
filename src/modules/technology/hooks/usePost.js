@@ -1,6 +1,20 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import { Fetcher } from "client";
+
+export const useAllPost = ({tid, uid}) => {
+ 
+  const { isLoading, error, data } = useQuery({
+    queryKey: ["postData"],
+    queryFn: async () =>
+      await Fetcher.get("/allPost", {
+        params: { techId: tid, userId: uid },
+      })
+        .then((res) => res.data)
+        .catch((err) => console.log(err)),
+  });
+
+  return { data, isLoading, error };
+};
 
 export const useCreatePost = () => {
   const queryClient = useQueryClient();
@@ -17,7 +31,6 @@ export const useCreatePost = () => {
 
   return { createMutation };
 };
-
 export const usePostById = () => {
   const { isLoading, error, data } = useQuery({
     queryKey: ["postData"],
@@ -44,7 +57,6 @@ export const useEditPost = () => {
 
   return { editMutation };
 };
-
 export const useDeletePost = () => {
   const queryClient = useQueryClient();
   const deleteMutation = useMutation({

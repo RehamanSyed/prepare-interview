@@ -85,7 +85,7 @@ const Home = () => {
         <Box w={"100%"} bg={"gray.100"}>
           <Container maxW={"container.sm"}>
             <Flex
-              minHeight={{ base: "60vh", lg: "50vh" }}
+              h={{ base: "600PX", lg: "450px" }}
               flexDir={"column"}
               justifyContent={"center"}
               alignItems={"center"}

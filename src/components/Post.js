@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 import {
   Box,
   Container,
@@ -13,77 +13,32 @@ import {
   Image,
   Flex,
   useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  Input,
-  Textarea,
-  FormControl,
-  FormHelperText,
-  FormLabel,
 } from "@chakra-ui/react";
 
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import { Editor } from "@tinymce/tinymce-react";
-import { useCreateQuestion } from "@/modules/technology/hooks/useReactJs";
-import {
-  useCreatePost,
-  useDeletePost,
-  useEditPost,
-  usePostById,
-} from "@/modules/technology/hooks/usePost";
 
-const Post = ({ data, isLoading, error, techId, userId }) => {
+const Post = ({
+  data,
+  isLoading,
+  error,
+  addQuestionHandler,
+  editPostHandler,
+  deletePostHandler,
+}) => {
   // console.log("data in Post Component ==>: ", techId);
-  const editorRef = useRef(null);
+
   const route = useRouter();
   const { data: session } = useSession();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [techquestion, setTechQuestion] = useState();
-  const [techUrl, setTechUrl] = useState();
-  const [editMode, setEditMode] = useState(false);
-
-  const { createMutation } = useCreatePost();
-  const { editMutation } = useEditPost();
-  const { deleteMutation } = useDeletePost();
-
-  // const { data: postById } = usePostById(techId);
-  // console.log("usePostByID data", postById);
-
-  const editorKey = process.env.NEXTEDITOR_TINY;
-
-  const addQuestionHandler = () => {
-    onOpen();
+  const { onOpen, } = useDisclosure();
+  const addHandler = () => {
+    addQuestionHandler();
   };
-
-  const submitQuestionHandler = (e) => {
-    e.preventDefault();
-    let formData = {
-      userId: userId,
-      techId: techId,
-      question: techquestion,
-      example: techUrl,
-      answer: editorRef.current.getContent(),
-    };
-    console.log("formdata", formData);
-    createMutation.mutate(formData);
-
-    onClose();
+  const editHandler = (id) => {
+    editPostHandler(id);
   };
-  const deletePostHandler = (id) => {
-    console.log("Post id", id);
-    deleteMutation.mutate(id);
-  };
-  const editPostHandler = (id) => {
-    console.log("Post id", id);
-    onOpen();
-
-    // editMutation.mutate(id);
+  const deleteHandler = (id) => {
+    deletePostHandler(id);
   };
 
   if (isLoading) return <Spinner />;
@@ -172,7 +127,7 @@ const Post = ({ data, isLoading, error, techId, userId }) => {
                           fontWeight={"medium"}
                           colorScheme={"blue"}
                           fontSize={14}
-                          onClick={() => editPostHandler(item._id)}
+                          onClick={() => editHandler(item._id)}
                         >
                           Edit
                         </Button>
@@ -183,7 +138,7 @@ const Post = ({ data, isLoading, error, techId, userId }) => {
                           fontWeight={"medium"}
                           colorScheme={"blue"}
                           fontSize={14}
-                          onClick={() => deletePostHandler(item._id)}
+                          onClick={() => deleteHandler(item._id)}
                         >
                           Delete
                         </Button>
@@ -232,140 +187,11 @@ const Post = ({ data, isLoading, error, techId, userId }) => {
           p={5}
           h={14}
           type="button"
-          onClick={addQuestionHandler}
+          onClick={addHandler}
         >
           ADD NEW QUESTION
         </Button>
       </Box>
-      <Modal
-        closeOnOverlayClick={false}
-        isOpen={isOpen}
-        onClose={onClose}
-        isCentered
-        motionPreset="slideInBottom"
-        size={"4xl"}
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader fontWeight={"bold"} fontSize={14}>
-            Add Your question and Answer
-          </ModalHeader>
-          <ModalCloseButton
-            border={"1px solid blue"}
-            rounded={"full"}
-            size={"sm"}
-            color={"blue"}
-            top={4}
-            right={4}
-          />
-          <form onSubmit={submitQuestionHandler}>
-            <ModalBody>
-              <Flex flexDir={"column"} gap={5}>
-                <FormControl>
-                  <FormLabel
-                    fontWeight={"regular"}
-                    color={"gray.600"}
-                    fontSize={14}
-                  >
-                    Add your question.
-                  </FormLabel>
-
-                  <Input
-                    type="Text"
-                    value={editMode ? "sdfsaf" : ""}
-                    onChange={(e) => setTechQuestion(e.target.value)}
-                  />
-                  <FormHelperText
-                    fontSize={10}
-                    color={"red.900"}
-                    display={"none"}
-                  >
-                    We will never share your email.
-                  </FormHelperText>
-                </FormControl>
-                <FormControl>
-                  <FormLabel
-                    fontWeight={"regular"}
-                    color={"gray.600"}
-                    fontSize={14}
-                  >
-                    Example Url ( Ex : CodeSandbox, jsFiddle, StackBlitz, etc.,)
-                  </FormLabel>
-                  <Input
-                    type="text"
-                    value={techUrl}
-                    onChange={(e) => setTechUrl(e.target.value)}
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel
-                    fontWeight={"regular"}
-                    color={"gray.600"}
-                    fontSize={14}
-                  >
-                    Add relevent answer
-                  </FormLabel>
-
-                  <Editor
-                    apiKey={editorKey}
-                    // onChange={(e) => setTechAnswer(e.target.value)}
-                    onInit={(event, editor) => (editorRef.current = editor)}
-                    init={{
-                      skin: "oxide-dark",
-                      content_css: "dark",
-                      height: 400,
-                      menubar: false,
-                      plugins: [
-                        "advlist",
-                        "autolink",
-                        "lists",
-                        "link",
-                        "image",
-                        "charmap",
-                        "anchor",
-                        "searchreplace",
-                        "visualblocks",
-                        "code",
-                        "insertdatetime",
-                        "media",
-                        "table",
-                        "preview",
-                        "help",
-                        "wordcount",
-                      ],
-                      toolbar:
-                        "undo redo | blocks | " +
-                        "bold italic forecolor | alignleft aligncenter " +
-                        "alignright alignjustify | bullist numlist outdent indent | " +
-                        "removeformat | help",
-                      content_style:
-                        "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-                    }}
-                  />
-                  {/* <Textarea
-                    size="sm"
-                    h={10}
-                    variant="outline"
-                    colorScheme="red"
-                    onChange={(e) => setTechAnswer(e.target.value)}
-                  /> */}
-                </FormControl>
-              </Flex>
-            </ModalBody>
-
-            <ModalFooter>
-              <Button
-                colorScheme="blue"
-                variant={"outline"}
-                mr={3}
-                type="submit"
-              >
-                Save Question
-              </Button>
-            </ModalFooter>
-          </form>
-        </ModalContent>
-      </Modal>
     </>
   );
 };
