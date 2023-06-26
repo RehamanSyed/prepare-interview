@@ -12,7 +12,9 @@ const Footer = () => {
           gap={1}
           fontSize={12}
         >
-          <Text>Built With</Text><AiFillHeart color="red" size={18} /><Text>@Syed Rehaman</Text>
+          <Text>Built With</Text>
+          <AiFillHeart color="red" size={18} />
+          <Text>@Syed Rehaman</Text>
         </Flex>
       </Container>
     </Box>

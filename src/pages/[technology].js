@@ -5,31 +5,30 @@ import MainLayout from "@/layouts/main.layout";
 import { Box, Container, Heading, Button, Flex, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
+import axios from "axios";
 
 const Technology = () => {
   const route = useRouter();
   const { tech, tid, uid } = route.query;
 
   const { isLoading, error, data } = useQuery({
-    queryKey: ["techData"],
+    queryKey: ["postData"],
     queryFn: async () =>
       await Fetcher.get("/allPost", {
-        techId: tid,
-        userId: uid,
-      }).then((res) => res.data),
+        params: { techId: tid, userId: "646b7644abf92e2043abf5ba" },
+      })
+        .then((res) => res.data)
+        .catch((err) => console.log(err)),
   });
 
-  console.log("post Data", data);
+  console.log("all post data", data);
 
-  useEffect(() => {
-    console.log(tid, uid);
-  }, [tid, uid]);
   return (
-    <Box minH={"100vh"} bg={"white"}>
+    <Box minH={"100vh"} bg={"white"} pb={10}>
       <Box w={"100%"} bg={"gray.100"}>
         <Container maxW={"container.sm"}>
           <Flex
-            height={"50vh"}
+            h={"450px"}
             flexDir={"column"}
             justifyContent={"center"}
             alignItems={"center"}

@@ -1,6 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
 import Axios from "axios";
-import { useSession } from "next-auth/react";
 
 export const Fetcher = Axios.create({
   // baseURL: "https://prep-api.vercel.app/api/v1/",

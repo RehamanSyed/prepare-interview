@@ -33,7 +33,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import { useCreateQuestion } from "@/modules/technology/hooks/useReactJs";
 
 const Post = ({ data, isLoading, error, techId, userId }) => {
-  console.log("data in Post Component ==>: ", techId);
+  // console.log("data in Post Component ==>: ", techId);
   const editorRef = useRef(null);
   const route = useRouter();
   const { data: session } = useSession();

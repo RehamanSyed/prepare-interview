@@ -12,7 +12,7 @@ export const useCreateQuestion = () => {
       console.log("post result", result);
       return result;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["techData"] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["postData"] }),
   });
 
   return { createMutation };
