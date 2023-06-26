@@ -168,7 +168,7 @@ const Home = () => {
                   );
                 })}
 
-                {/* <GridItem
+                <GridItem
                   colSpan={[4, 4, 1, 1, 1]}
                   key={123}
                   h={32}
@@ -193,7 +193,7 @@ const Home = () => {
                       Add Stack
                     </Heading>
                   </Flex>
-                </GridItem> */}
+                </GridItem>
               </>
             )}
           </Grid>

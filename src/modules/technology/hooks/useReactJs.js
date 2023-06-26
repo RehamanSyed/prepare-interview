@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import { Fetcher } from "client";
 
 export const useCreateQuestion = () => {
@@ -6,10 +7,13 @@ export const useCreateQuestion = () => {
   const createMutation = useMutation({
     mutationKey: ["createTech"],
     mutationFn: async (formData) => {
-      const result = await Fetcher.post(`/createPost`, formData);
+      console.log(formData);
+      const result = await Fetcher.post("/createPost", formData);
+      console.log("post result", result);
       return result;
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["techData"] }),
   });
+
   return { createMutation };
 };

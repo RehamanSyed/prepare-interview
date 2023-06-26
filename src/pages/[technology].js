@@ -4,10 +4,12 @@ import Post from "@/components/Post";
 import MainLayout from "@/layouts/main.layout";
 import { Box, Container, Heading, Button, Flex, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 
 const Technology = () => {
   const route = useRouter();
   const { tech, tid, uid } = route.query;
+
   const { isLoading, error, data } = useQuery({
     queryKey: ["techData"],
     queryFn: async () =>
@@ -19,6 +21,9 @@ const Technology = () => {
 
   console.log("post Data", data);
 
+  useEffect(() => {
+    console.log(tid, uid);
+  }, [tid, uid]);
   return (
     <Box minH={"100vh"} bg={"white"}>
       <Box w={"100%"} bg={"gray.100"}>

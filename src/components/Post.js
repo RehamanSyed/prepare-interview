@@ -33,7 +33,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import { useCreateQuestion } from "@/modules/technology/hooks/useReactJs";
 
 const Post = ({ data, isLoading, error, techId, userId }) => {
-  // console.log("data in Post Component ==>: ", data);
+  console.log("data in Post Component ==>: ", techId);
   const editorRef = useRef(null);
   const route = useRouter();
   const { data: session } = useSession();
@@ -69,7 +69,7 @@ const Post = ({ data, isLoading, error, techId, userId }) => {
   return (
     <>
       <Box mt={-28} bg={"white"} p={10} rounded={"xl"} shadow={"2xl"}>
-        <Accordion>
+        <Accordion allowMultiple>
           {data &&
             data.map((item, idx) => {
               return (
@@ -115,9 +115,10 @@ const Post = ({ data, isLoading, error, techId, userId }) => {
                           fontSize: 14,
                         },
                         "& code": {
-                          backgroundColor: "red.600",
-                          padding: "0.1rem",
+                          backgroundColor: "red.100",
+                          padding: "1px 5px",
                           borderRadius: "0.2rem",
+                          color: "red",
                         },
                       }}
                     ></Box>
