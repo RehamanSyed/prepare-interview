@@ -31,6 +31,12 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useCreateQuestion } from "@/modules/technology/hooks/useReactJs";
+import {
+  useCreatePost,
+  useDeletePost,
+  useEditPost,
+  usePostById,
+} from "@/modules/technology/hooks/usePost";
 
 const Post = ({ data, isLoading, error, techId, userId }) => {
   // console.log("data in Post Component ==>: ", techId);
@@ -38,9 +44,16 @@ const Post = ({ data, isLoading, error, techId, userId }) => {
   const route = useRouter();
   const { data: session } = useSession();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { createMutation } = useCreateQuestion();
   const [techquestion, setTechQuestion] = useState();
   const [techUrl, setTechUrl] = useState();
+  const [editMode, setEditMode] = useState(false);
+
+  const { createMutation } = useCreatePost();
+  const { editMutation } = useEditPost();
+  const { deleteMutation } = useDeletePost();
+
+  // const { data: postById } = usePostById(techId);
+  // console.log("usePostByID data", postById);
 
   const editorKey = process.env.NEXTEDITOR_TINY;
 
@@ -58,8 +71,19 @@ const Post = ({ data, isLoading, error, techId, userId }) => {
       answer: editorRef.current.getContent(),
     };
     console.log("formdata", formData);
-
     createMutation.mutate(formData);
+
+    onClose();
+  };
+  const deletePostHandler = (id) => {
+    console.log("Post id", id);
+    deleteMutation.mutate(id);
+  };
+  const editPostHandler = (id) => {
+    console.log("Post id", id);
+    onOpen();
+
+    // editMutation.mutate(id);
   };
 
   if (isLoading) return <Spinner />;
@@ -122,22 +146,49 @@ const Post = ({ data, isLoading, error, techId, userId }) => {
                         },
                       }}
                     ></Box>
-                    {item.example === null ? (
-                      ""
-                    ) : (
-                      <Button
-                        as="a"
-                        target="_blank"
-                        variant={"link"}
-                        fontWeight={"medium"}
-                        colorScheme={"blue"}
-                        fontSize={14}
-                        mt={5}
-                        href={item.example}
-                      >
-                        See the Example
-                      </Button>
-                    )}
+
+                    <Flex justifyContent={"space-between"} mt={5}>
+                      {item.example === null ? (
+                        ""
+                      ) : (
+                        <Button
+                          as="a"
+                          target="_blank"
+                          variant={"link"}
+                          fontWeight={"medium"}
+                          colorScheme={"blue"}
+                          fontSize={14}
+                          href={item.example}
+                        >
+                          See the Example
+                        </Button>
+                      )}
+
+                      <Flex gap={10}>
+                        <Button
+                          as="a"
+                          target="_blank"
+                          variant={"link"}
+                          fontWeight={"medium"}
+                          colorScheme={"blue"}
+                          fontSize={14}
+                          onClick={() => editPostHandler(item._id)}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          as="a"
+                          target="_blank"
+                          variant={"link"}
+                          fontWeight={"medium"}
+                          colorScheme={"blue"}
+                          fontSize={14}
+                          onClick={() => deletePostHandler(item._id)}
+                        >
+                          Delete
+                        </Button>
+                      </Flex>
+                    </Flex>
                   </AccordionPanel>
                 </AccordionItem>
               );
@@ -221,6 +272,7 @@ const Post = ({ data, isLoading, error, techId, userId }) => {
 
                   <Input
                     type="Text"
+                    value={editMode ? "sdfsaf" : ""}
                     onChange={(e) => setTechQuestion(e.target.value)}
                   />
                   <FormHelperText
@@ -241,6 +293,7 @@ const Post = ({ data, isLoading, error, techId, userId }) => {
                   </FormLabel>
                   <Input
                     type="text"
+                    value={techUrl}
                     onChange={(e) => setTechUrl(e.target.value)}
                   />
                 </FormControl>
@@ -260,8 +313,8 @@ const Post = ({ data, isLoading, error, techId, userId }) => {
                     init={{
                       skin: "oxide-dark",
                       content_css: "dark",
-                      height: 300,
-                      menubar: true,
+                      height: 400,
+                      menubar: false,
                       plugins: [
                         "advlist",
                         "autolink",
