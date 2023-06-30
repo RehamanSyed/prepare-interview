@@ -21,6 +21,7 @@ import {
   useDeletePost,
   useEditPost,
 } from "@/modules/technology/hooks/usePost";
+import { useSession } from "next-auth/react";
 
 const Technology = () => {
   const { data: session } = useSession();
@@ -30,8 +31,6 @@ const Technology = () => {
   const { isLoading, error, data } = useAllPost({ tid, uid });
   const { editMutation } = useEditPost();
   const { deleteMutation } = useDeletePost();
-
-  console.log("all post data", data);
 
   const addQuestionHandler = () => {
     onOpen();
@@ -47,14 +46,16 @@ const Technology = () => {
 
     // editMutation.mutate(id);
   };
-
+  useEffect(() => {
+    console.log("all post data", data);
+  }, [data]);
   return (
     <Box minH={"100vh"} bg={"white"} pb={10}>
       <PageContent tech={tech} />
 
       <Container maxW={"container.lg"}>
         {tech === "Css" ||
-        tech === "React" ||
+        tech === "Reactjs" ||
         tech === "Javascript" ||
         tech === "Html" ||
         tech === "NextJs" ||
@@ -79,7 +80,7 @@ const Technology = () => {
             />
           </>
         ) : (
-          ""
+          "huudsf"
         )}
       </Container>
     </Box>

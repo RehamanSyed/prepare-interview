@@ -151,7 +151,7 @@ const Home = () => {
                           pathname: `/${item.page}`,
                           query: {
                             tid: `${item._id}`,
-                            uid: `646b7644abf92e2043abf5ba`,
+                            uid: `${session?.user.id}`,
                             tech: `${item.page}`,
                           },
                         }}

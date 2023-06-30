@@ -1,13 +1,18 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Fetcher } from "client";
+import { useSession } from "next-auth/react";
 
-export const useAllPost = ({tid, uid}) => {
- 
+export const useAllPost = ({ tid, uid }) => {
+  const { data: session } = useSession();
   const { isLoading, error, data } = useQuery({
     queryKey: ["postData"],
     queryFn: async () =>
       await Fetcher.get("/allPost", {
         params: { techId: tid, userId: uid },
+        headers: {
+          Authorization: `bearer ${session.user.token}`,
+          "Content-Type": "application/json",
+        },
       })
         .then((res) => res.data)
         .catch((err) => console.log(err)),
@@ -17,12 +22,18 @@ export const useAllPost = ({tid, uid}) => {
 };
 
 export const useCreatePost = () => {
+  const { data: session } = useSession();
   const queryClient = useQueryClient();
   const createMutation = useMutation({
     mutationKey: ["createTech"],
     mutationFn: async (formData) => {
       console.log(formData);
-      const result = await Fetcher.post("/createPost", formData);
+      const result = await Fetcher.post("/createPost", formData, {
+        headers: {
+          Authorization: `bearer ${session.user.token}`,
+          "Content-Type": "application/json",
+        },
+      });
       console.log("post result", result);
       return result;
     },
@@ -32,10 +43,16 @@ export const useCreatePost = () => {
   return { createMutation };
 };
 export const usePostById = () => {
+  const { data: session } = useSession();
   const { isLoading, error, data } = useQuery({
     queryKey: ["postData"],
     queryFn: async () =>
-      await Fetcher.get("/getPostbyId/643c73b7623c49aa7b36723e")
+      await Fetcher.get("/getPostbyId/643c73b7623c49aa7b36723e", {
+        headers: {
+          Authorization: `bearer ${session.user.token}`,
+          "Content-Type": "application/json",
+        },
+      })
         .then((res) => res.data)
         .catch((err) => console.log(err)),
   });
@@ -43,12 +60,18 @@ export const usePostById = () => {
   return { data };
 };
 export const useEditPost = () => {
+  const { data: session } = useSession();
   const queryClient = useQueryClient();
   const editMutation = useMutation({
     mutationKey: ["editTech"],
     mutationFn: async (id) => {
       console.log(id);
-      const result = await Fetcher.post(`/updatePost/${id}`);
+      const result = await Fetcher.post(`/updatePost/${id}`, {
+        headers: {
+          Authorization: `bearer ${session.user.token}`,
+          "Content-Type": "application/json",
+        },
+      });
       console.log("post result", result);
       return result;
     },
@@ -58,6 +81,7 @@ export const useEditPost = () => {
   return { editMutation };
 };
 export const useDeletePost = () => {
+  const { data: session } = useSession();
   const queryClient = useQueryClient();
   const deleteMutation = useMutation({
     mutationKey: ["deleteTech"],
