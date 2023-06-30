@@ -18,14 +18,20 @@ import React from "react";
 
 const Homepage = () => {
   const route = useRouter();
+  const { data: session } = useSession();
   const { isLoading, error, data } = useQuery({
     queryKey: ["techData"],
     queryFn: async () =>
-      await Fetcher.get("alltech")
+      await Fetcher.get("alltech", {
+        headers: {
+          Authorization: `bearer ${session.user.token}`,
+          "Content-Type": "application/json",
+        },
+      })
         .then((res) => res.data)
         .catch((error) => console.log(error)),
   });
-  const { data: session } = useSession();
+
   // console.log("session data", session);
   if (session === null) {
     route.push("/auth/signin");
@@ -79,7 +85,7 @@ const Homepage = () => {
                   fontWeight="bold"
                   size={"md"}
                 >
-                 Home Page Comming soon
+                  Home Page Comming soon
                 </Heading>
               </Flex>
             </GridItem>

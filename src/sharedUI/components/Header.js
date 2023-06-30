@@ -44,6 +44,9 @@ const CommonHeader = () => {
                 listStyleType={"none"}
               >
                 <ListItem>
+                  <Link href={"/"}>Home</Link>
+                </ListItem>
+                <ListItem>
                   <Link href={"/user-profile"}>Profile</Link>
                 </ListItem>
                 <ListItem>

@@ -15,32 +15,45 @@ export const authOptions = {
       clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET,
     }),
     CredentialsProvider({
-      type: "credentials",
-      credentials: {},
+      name: "credentials",
+      // credentials: {
+      //   email: { label: "Email", type: "email" },
+      //   password: { label: "Password", type: "password" },
+      // },
       async authorize(credentials, req) {
-        console.log("credentials", credentials);
         const { email, password } = credentials;
         const response = await Fetcher.post("/login", {
-          email: credentials.email,
-          password: credentials.password,
+          email: email,
+          password: password,
         });
-        let result = await response.data;
-        console.log("reuslt @ credentials--> ", result);
-        if (email !== result.user.email || password !== result.user.password) {
-          throw new Error("Invalid credentials");
+        let user = await response.data;
+        console.log("reuslt @ credentials--> ", user);
+
+        if (user) {
+          return user;
+        } else {
+          return null;
         }
-        return result.user; // login succesfully
       },
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
+
   pages: {
     signin: "/auth/signin",
     signout: "/auth/signout",
     error: "/auth/error",
   },
-  session: {
-    strategy: "jwt",
+  callbacks: {
+    async jwt({ token, user }) {
+      console.log("in call back jwt", user, token);
+      return { ...token, ...user };
+    },
+    async session({ session, token, user }) {
+      console.log("in call back session", session, user, token);
+      session.user = token;
+      return session;
+    },
   },
 };
 export default NextAuth(authOptions);

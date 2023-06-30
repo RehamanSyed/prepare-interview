@@ -4,10 +4,11 @@ import Post from "@/components/Post";
 import MainLayout from "@/layouts/main.layout";
 import { Box, Container, Heading, Button, Flex, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
-import axios from "axios";
+
+import { useSession } from "next-auth/react";
 
 const Technology = () => {
+  const { data: session } = useSession();
   const route = useRouter();
   const { tech, tid, uid } = route.query;
 
@@ -16,6 +17,10 @@ const Technology = () => {
     queryFn: async () =>
       await Fetcher.get("/allPost", {
         params: { techId: tid, userId: "646b7644abf92e2043abf5ba" },
+        headers: {
+          Authorization: `bearer ${session.user.token}`,
+          "Content-Type": "application/json",
+        },
       })
         .then((res) => res.data)
         .catch((err) => console.log(err)),

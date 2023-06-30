@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SessionProvider } from "next-auth/react";
 // Supports weights 100-900
 // import '@fontsource-variable/inter';
-import '@fontsource/poppins';
+import "@fontsource/poppins";
 
 export default function App({
   Component,
@@ -21,6 +21,5 @@ export default function App({
         </SessionProvider>
       </QueryClientProvider>
     </ChakraProvider>
-  
   );
 }

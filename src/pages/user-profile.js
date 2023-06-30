@@ -1,8 +1,10 @@
 import React from "react";
 import { Box, Container, Flex, Heading, Text } from "@chakra-ui/react";
 import MainLayout from "@/layouts/main.layout";
+import { useSession } from "next-auth/react";
 
 const Userprofile = () => {
+  const { data: session } = useSession();
   return (
     <Box bg={"white"} minH={"100vh"}>
       <Box w={"100%"} bg={"gray.100"}>
@@ -14,11 +16,8 @@ const Userprofile = () => {
             alignItems={"center"}
             gap={5}
           >
-            <Heading>Page is Under Development</Heading>
-            <Text textAlign={"center"}>
-              I am looking to provide this service as soon as possible, Hold
-              your breath for sometime. Good days are coming. :)
-            </Text>
+            <Heading>{session.user.name}</Heading>
+            <Text textAlign={"center"}>{session.user.email}</Text>
           </Flex>
         </Container>
       </Box>

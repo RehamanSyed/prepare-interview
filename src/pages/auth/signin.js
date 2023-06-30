@@ -17,13 +17,13 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { AiOutlineKey, AiOutlineUser } from "react-icons/ai";
 
-export async function getServerSideProps(context) {
-  return {
-    props: { csrfToken: await getCsrfToken(context) },
-  };
-}
-const SignIn = ({ csrfToken }) => {
-  console.log(csrfToken);
+// export async function getServerSideProps(context) {
+//   return {
+//     props: { csrfToken: await getCsrfToken(context) },
+//   };
+// }
+const SignIn = () => {
+  // console.log(csrfToken);
   const [inputVal, setInputVal] = useState("syed@gmail.com");
   const [passwordVal, setPasswordVal] = useState("123456");
   const route = useRouter();
@@ -32,12 +32,15 @@ const SignIn = ({ csrfToken }) => {
 
   const loginHandler = async (e) => {
     e.preventDefault();
-    const result = await signIn("credentials", {
+    console.log(inputVal);
+    console.log(passwordVal);
+
+    // signIn();
+    await signIn("credentials", {
       email: inputVal,
       password: passwordVal,
       redirect: false,
     });
-    console.log("result @ signin page", result);
   };
   const googleHandler = async (e) => {
     signIn("google", { callbackUrl: "http://localhost:3000/" });

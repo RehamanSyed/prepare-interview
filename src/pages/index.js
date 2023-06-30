@@ -36,8 +36,8 @@ import { useState } from "react";
 export async function getServerSideProps(context) {
   const { req, res } = context;
   const session = await getSession({ req });
-  // console.log("Context ---<", session);
-  if (!session) {
+  console.log("Context ---<", session);
+  if (!session?.user) {
     return {
       redirect: {
         destination: "/auth/signin",
@@ -54,10 +54,17 @@ const Home = () => {
   const { data: session } = useSession();
   const { createMutation } = useCreateStack();
   const route = useRouter();
+
+  console.log("session", session);
   const { isLoading, error, data } = useQuery({
     queryKey: ["techData"],
     queryFn: async () =>
-      await Fetcher.get("/allTech")
+      await Fetcher.get("/allTech", {
+        headers: {
+          Authorization: `bearer ${session.user.token}`,
+          "Content-Type": "application/json",
+        },
+      })
         .then((res) => res.data)
         .catch((error) => console.log(error)),
   });
