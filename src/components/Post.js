@@ -30,7 +30,7 @@ const Post = ({
 
   const route = useRouter();
   const { data: session } = useSession();
-  const { onOpen, } = useDisclosure();
+  const { onOpen } = useDisclosure();
   const addHandler = () => {
     addQuestionHandler();
   };
@@ -47,7 +47,13 @@ const Post = ({
 
   return (
     <>
-      <Box mt={-28} bg={"white"} p={10} rounded={"xl"} shadow={"2xl"}>
+      <Box
+        mt={-28}
+        bg={"white"}
+        p={[2, 4, 6, 10]}
+        rounded={"xl"}
+        shadow={"2xl"}
+      >
         <Accordion allowMultiple>
           {data &&
             data.map((item, idx) => {
@@ -67,9 +73,9 @@ const Post = ({
                       flex="1"
                       textAlign="left"
                       fontWeight="medium"
-                      fontSize={16}
+                      fontSize={[14, 14, 16]}
                       py={2}
-                      px={5}
+                      px={[1, 1, 2, 5]}
                     >
                       {idx + 1}. {item.question}
                     </Box>
@@ -92,12 +98,20 @@ const Post = ({
                         "& p": {
                           color: "black.500",
                           fontSize: 14,
+                          lineHeight:6
                         },
                         "& code": {
                           backgroundColor: "red.100",
                           padding: "1px 5px",
                           borderRadius: "0.2rem",
                           color: "red",
+                        },
+                        "& ul": {
+                          marginTop: 5,
+                        },
+                        "& ul li": {
+                          fontSize: 14,
+                          lineHeight:6
                         },
                       }}
                     ></Box>
