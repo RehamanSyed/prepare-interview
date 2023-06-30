@@ -16,8 +16,8 @@ const Userprofile = () => {
             alignItems={"center"}
             gap={5}
           >
-            <Heading>{session.user.name}</Heading>
-            <Text textAlign={"center"}>{session.user.email}</Text>
+            <Heading>{session?.user?.name}</Heading>
+            <Text textAlign={"center"}>{session?.user?.email}</Text>
           </Flex>
         </Container>
       </Box>
