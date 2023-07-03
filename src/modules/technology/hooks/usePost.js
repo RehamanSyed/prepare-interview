@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Fetcher } from "client";
 import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 export const useAllPost = ({ tid, uid }) => {
   const { data: session } = useSession();
@@ -26,7 +27,7 @@ export const useCreatePost = () => {
   const createMutation = useMutation({
     mutationKey: ["createTech"],
     mutationFn: async (formData) => {
-      console.log(formData);
+      console.log("Edit Form Data",formData);
       const result = await Fetcher.post("/createPost", formData, {
         headers: {
           Authorization: `bearer ${session.user.token}`,
@@ -34,31 +35,31 @@ export const useCreatePost = () => {
         },
       });
       console.log("post result", result);
-      return result;
+      return result.data;
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["postData"] }),
   });
 
   return { createMutation };
 };
-export const usePostById = (postId) => {
+export const usePostById = (id) => {
   const { data: session } = useSession();
-  console.log("usePostById-->", postId);
   const { isLoading, error, data } = useQuery({
     queryKey: ["postIdData"],
-    queryFn: async () =>
-      await Fetcher.get(`/getPostbyId/${id}`, {
+    queryFn: async () => {
+      const result = await Fetcher.get(`/getPostbyId/${id}`, {
         headers: {
-          params: { postId },
           Authorization: `bearer ${session.user.token}`,
           "Content-Type": "application/json",
         },
-      })
-        .then((res) => res.data)
-        .then((res) => console.log("getPostbyId data-->", res.data))
-        .catch((err) => console.log(err)),
+      });
+      console.log("result data", result.data);
+      return result.data;
+    },
   });
-
+  useEffect(() => {
+    console.log("usePostById-->", id);
+  }, [id]);
   return { data };
 };
 export const useEditPost = () => {

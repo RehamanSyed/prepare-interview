@@ -20,6 +20,7 @@ import {
   useAllPost,
   useDeletePost,
   useEditPost,
+  usePostById,
 } from "@/modules/technology/hooks/usePost";
 import { useSession } from "next-auth/react";
 import EditPostModal from "@/components/EditPostModal";
@@ -35,27 +36,25 @@ const Technology = () => {
   } = useDisclosure();
   const { tech, tid, uid } = route.query;
   const { isLoading, error, data } = useAllPost({ tid, uid });
-  const [postId, setPostId] = useState();
+  const [postId, setPostId] = useState("64a23b6280abb8c4626b7fe7");
   const { editMutation } = useEditPost();
   const { deleteMutation } = useDeletePost();
+  const [editMode, setEditMode] = useState();
 
   const addQuestionHandler = () => {
+    setEditMode(false);
     onOpen();
   };
-
+  const editPostHandler = (id) => {
+    setPostId(id);
+    setEditMode(true);
+    onOpen();
+  };
   const deletePostHandler = (id) => {
     console.log("Post id", id);
     deleteMutation.mutate(id);
   };
 
-  const editPostHandler = (id) => {
-    setPostId(id);
-    onOpen();
-  };
-
-  useEffect(() => {
-    console.log("all post data", data);
-  }, [data]);
   const colorSchemeTech = {
     Reactjs: "linear(to-r, blue.300, teal.500, blue.300)",
     nextjs: "linear(to-r, blue.300, teal.500, blue.300)",
@@ -63,6 +62,7 @@ const Technology = () => {
     Javascript: "linear(to-r, blue.300, teal.500, blue.300)",
     Css: "linear(to-r, green.300, red.500, green.300)",
   };
+
   return (
     <Box minH={"100vh"} bg={"white"} pb={10}>
       <PageContent tech={tech} colorSchemeTech={colorSchemeTech} />
@@ -93,12 +93,7 @@ const Technology = () => {
               techId={tid}
               userId={uid}
               postId={postId}
-            />
-            <EditPostModal
-              isOpen={editisOpen}
-              onClose={editClose}
-              techId={tid}
-              userId={uid}
+              editMode={editMode}
             />
           </>
         ) : (

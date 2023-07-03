@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -20,42 +20,43 @@ import {
   usePostById,
 } from "@/modules/technology/hooks/usePost";
 import { Editor } from "@tinymce/tinymce-react";
-const PostModal = ({ isOpen, onClose, userId, techId, postId }) => {
-  const [editMode, setEditMode] = useState(false);
+const PostModal = ({ isOpen, onClose, userId, techId, postId, editMode }) => {
+  
 
-  const editorKey = process.env.NEXTEDITOR_TINY;
-  const editorRef = useRef(null);
   const { createMutation } = useCreatePost();
   const { editMutation } = useEditPost();
   const [techquestion, setTechQuestion] = useState();
   const [techUrl, setTechUrl] = useState();
-  const { data } = usePostById(postId);
-  console.log("prot data", data);
-
+  const [techAns, setTechAns] = useState("");
+  const { data: postIdData } = usePostById(postId);
   const submitQuestionHandler = (e) => {
     e.preventDefault();
-
-    if (editMode) {
+    if (!editMode) {
+      console.log("i at create post")
       let formData = {
         userId: userId,
         techId: techId,
         question: techquestion,
         example: techUrl,
-        answer: editorRef.current.getContent(),
+        answer: techAns,
       };
       createMutation.mutate(formData);
     } else {
-      console.log("object", postId);
+      console.log("i at Edit post")
       let formData = {
         question: techquestion,
         example: techUrl,
-        answer: editorRef.current.getContent(),
+        answer: techAns,
       };
+      console.log("Edit",formData)
       editMutation.mutate(postId, formData);
     }
-
     onClose();
   };
+
+  useEffect(() => {
+    console.log("id",postIdData);
+  }, [postIdData]);
 
   return (
     <>
@@ -70,7 +71,7 @@ const PostModal = ({ isOpen, onClose, userId, techId, postId }) => {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader fontWeight={"bold"} fontSize={14}>
-            Add Your question and Answer
+            {editMode ? "Edit" : "Add"} Your question and Answer
           </ModalHeader>
           <ModalCloseButton
             border={"1px solid blue"}
@@ -88,12 +89,14 @@ const PostModal = ({ isOpen, onClose, userId, techId, postId }) => {
                     fontWeight={"regular"}
                     color={"gray.600"}
                     fontSize={14}
+                    htmlFor="question"
                   >
                     Add your question.
                   </FormLabel>
                   <Input
                     type="text"
-                    // value={editMode ? "" : techquestion}
+                    name="question"
+                    value={editMode ? postIdData?.question : techquestion}
                     onChange={(e) => setTechQuestion(e.target.value)}
                   />
                   <FormHelperText
@@ -109,12 +112,14 @@ const PostModal = ({ isOpen, onClose, userId, techId, postId }) => {
                     fontWeight={"regular"}
                     color={"gray.600"}
                     fontSize={14}
+                    htmlFor="example"
                   >
                     Example Url ( Ex : CodeSandbox, jsFiddle, StackBlitz, etc.,)
                   </FormLabel>
                   <Input
                     type="text"
-                    // value={techUrl}
+                    name="example"
+                    value={editMode ? postIdData?.example : techUrl}
                     onChange={(e) => setTechUrl(e.target.value)}
                   />
                 </FormControl>
@@ -127,13 +132,16 @@ const PostModal = ({ isOpen, onClose, userId, techId, postId }) => {
                     Add relevent answer
                   </FormLabel>
 
-                  <Editor
-                    apiKey={editorKey}
-                    // onChange={(e) => setTechAnswer(e.target.value)}
-                    onInit={(event, editor) => (editorRef.current = editor)}
+                
+                
+                </FormControl>
+              </Flex>
+              <Editor
+                    apiKey='9e6zrt6tjm44ammn80f49rlcqhidyil1q1azncfys7a3f6z1'
+                    onChange={(e) => setTechAns(e.target.getContent())}
+                    // onInit={(event, editor) => (editorRef.current = editor)}
                     init={{
-                      skin: "oxide-dark",
-                      content_css: "dark",
+                      
                       height: 400,
                       menubar: false,
                       plugins: [
@@ -162,16 +170,8 @@ const PostModal = ({ isOpen, onClose, userId, techId, postId }) => {
                       content_style:
                         "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
                     }}
+                    initialValue={editMode ? postIdData?.answer : techAns}
                   />
-                  {/* <Textarea
-                size="sm"
-                h={10}
-                variant="outline"
-                colorScheme="red"
-                onChange={(e) => setTechAnswer(e.target.value)}
-              /> */}
-                </FormControl>
-              </Flex>
             </ModalBody>
 
             <ModalFooter>
