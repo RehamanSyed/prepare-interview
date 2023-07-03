@@ -14,45 +14,29 @@ import {
   Button,
   Flex,
 } from "@chakra-ui/react";
-import {
-  useCreatePost,
-  useEditPost,
-  usePostById,
-} from "@/modules/technology/hooks/usePost";
+import { useCreatePost, useEditPost } from "@/modules/technology/hooks/usePost";
 import { Editor } from "@tinymce/tinymce-react";
-const PostModal = ({ isOpen, onClose, userId, techId, postId }) => {
-  const [editMode, setEditMode] = useState(false);
-
+const EditPostModal = ({ isOpen, onClose, userId, techId }) => {
   const editorKey = process.env.NEXTEDITOR_TINY;
   const editorRef = useRef(null);
   const { createMutation } = useCreatePost();
-  const { editMutation } = useEditPost();
+
   const [techquestion, setTechQuestion] = useState();
   const [techUrl, setTechUrl] = useState();
-  const { data } = usePostById(postId);
-  console.log("prot data", data);
+  const [editMode, setEditMode] = useState(false);
 
+  const { editMutation } = useEditPost();
   const submitQuestionHandler = (e) => {
     e.preventDefault();
-
-    if (editMode) {
-      let formData = {
-        userId: userId,
-        techId: techId,
-        question: techquestion,
-        example: techUrl,
-        answer: editorRef.current.getContent(),
-      };
-      createMutation.mutate(formData);
-    } else {
-      console.log("object", postId);
-      let formData = {
-        question: techquestion,
-        example: techUrl,
-        answer: editorRef.current.getContent(),
-      };
-      editMutation.mutate(postId, formData);
-    }
+    let formData = {
+      userId: userId,
+      techId: techId,
+      question: techquestion,
+      example: techUrl,
+      answer: editorRef.current.getContent(),
+    };
+    console.log("formdata", formData);
+    editMutation.mutate(formData);
 
     onClose();
   };
@@ -191,4 +175,4 @@ const PostModal = ({ isOpen, onClose, userId, techId, postId }) => {
   );
 };
 
-export default PostModal;
+export default EditPostModal;

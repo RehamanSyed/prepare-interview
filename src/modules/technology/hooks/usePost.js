@@ -7,7 +7,7 @@ export const useAllPost = ({ tid, uid }) => {
   const { isLoading, error, data } = useQuery({
     queryKey: ["postData"],
     queryFn: async () =>
-      await Fetcher.get("/allPost", {
+      await Fetcher.get("/allPostByStack", {
         params: { techId: tid, userId: uid },
         headers: {
           Authorization: `bearer ${session.user.token}`,
@@ -20,7 +20,6 @@ export const useAllPost = ({ tid, uid }) => {
 
   return { data, isLoading, error };
 };
-
 export const useCreatePost = () => {
   const { data: session } = useSession();
   const queryClient = useQueryClient();
@@ -42,18 +41,21 @@ export const useCreatePost = () => {
 
   return { createMutation };
 };
-export const usePostById = () => {
+export const usePostById = (postId) => {
   const { data: session } = useSession();
+  console.log("usePostById-->", postId);
   const { isLoading, error, data } = useQuery({
-    queryKey: ["postData"],
+    queryKey: ["postIdData"],
     queryFn: async () =>
-      await Fetcher.get("/getPostbyId/643c73b7623c49aa7b36723e", {
+      await Fetcher.get(`/getPostbyId/${id}`, {
         headers: {
+          params: { postId },
           Authorization: `bearer ${session.user.token}`,
           "Content-Type": "application/json",
         },
       })
         .then((res) => res.data)
+        .then((res) => console.log("getPostbyId data-->", res.data))
         .catch((err) => console.log(err)),
   });
 
@@ -64,9 +66,9 @@ export const useEditPost = () => {
   const queryClient = useQueryClient();
   const editMutation = useMutation({
     mutationKey: ["editTech"],
-    mutationFn: async (id) => {
+    mutationFn: async (id, formData) => {
       console.log(id);
-      const result = await Fetcher.post(`/updatePost/${id}`, {
+      const result = await Fetcher.put(`/updatePost/${id}`, formData, {
         headers: {
           Authorization: `bearer ${session.user.token}`,
           "Content-Type": "application/json",
@@ -77,7 +79,6 @@ export const useEditPost = () => {
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["postData"] }),
   });
-
   return { editMutation };
 };
 export const useDeletePost = () => {
@@ -87,7 +88,12 @@ export const useDeletePost = () => {
     mutationKey: ["deleteTech"],
     mutationFn: async (id) => {
       console.log("Delete post id --->", id);
-      const result = await Fetcher.delete(`/deletePost/${id}`);
+      const result = await Fetcher.delete(`/deletePost/${id}`, {
+        headers: {
+          Authorization: `bearer ${session.user.token}`,
+          "Content-Type": "application/json",
+        },
+      });
       console.log("post result", result);
       return result;
     },
