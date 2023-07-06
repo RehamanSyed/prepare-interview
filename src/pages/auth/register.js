@@ -14,8 +14,9 @@ import {
   Form,
   AbsoluteCenter,
   HStack,
+  border,
 } from "@chakra-ui/react";
-import { getCsrfToken, signIn, signOut, useSession } from "next-auth/react";
+import { getCsrfToken, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -31,10 +32,11 @@ import {
 //     props: { csrfToken: await getCsrfToken(context) },
 //   };
 // }
-const SignIn = () => {
+const Register = () => {
   // console.log(csrfToken);
-  const [inputVal, setInputVal] = useState("syed@gmail.com");
-  const [passwordVal, setPasswordVal] = useState("123456");
+  const [inputEmail, setInputEmail] = useState();
+  const [inputUsername, setInputUsername] = useState();
+  const [passwordVal, setPasswordVal] = useState();
   const route = useRouter();
   const { data: session } = useSession();
   //   console.log("session data", session);
@@ -44,19 +46,14 @@ const SignIn = () => {
     console.log(inputVal);
     console.log(passwordVal);
 
-    // signIn();
-    await signIn("credentials", {
+    // Register();
+    await Register("credentials", {
       email: inputVal,
       password: passwordVal,
       redirect: false,
     });
   };
-  const googleHandler = async (e) => {
-    signIn("google", { callbackUrl: "http://localhost:3000/" });
-  };
-  const githubHandler = async (e) => {
-    signIn("github", { callbackUrl: "http://localhost:3000/" });
-  };
+
   if (session) {
     route.push("/");
   }
@@ -73,9 +70,10 @@ const SignIn = () => {
             gap={3}
             fontSize={"xl"}
             textAlign={"center"}
+            flexDirection="column"
             fontWeight={"bold"}
           >
-            Welcome to
+            Register With us
             <Link href="/">
               <Text bgGradient="linear(to-l, #7928CA, #FF0080)" bgClip="text">
                 Interview Warmup !
@@ -87,30 +85,54 @@ const SignIn = () => {
           <form onSubmit={loginHandler} style={{ width: "350px" }}>
             <Flex justifyContent={"center"} flexDirection={"column"} gap={5}>
               <InputGroup>
-                <InputLeftElement pointerEvents="none">
-                  <AiOutlineUser color="gray.300" />
+                <InputLeftElement pointerEvents="none" h={12}>
+                  <AiOutlineUser color="gray.300" size={18} />
+                </InputLeftElement>
+                <Input
+                  type="text"
+                  fontSize={14}
+                  h={12}
+                  placeholder="Enter your username"
+                  bg={"white"}
+                  onChange={(e) => setInputUsername(e.target.value)}
+                />
+              </InputGroup>
+              <InputGroup>
+                <InputLeftElement pointerEvents="none" h={12}>
+                  <AiOutlineUser color="gray.300" size={18} />
                 </InputLeftElement>
                 <Input
                   type="email"
                   fontSize={14}
                   h={12}
-                  placeholder="Enter your username"
-                  value={inputVal}
+                  placeholder="Enter your Email"
                   bg={"white"}
-                  onChange={(e) => setInputVal(e.target.value)}
+                  onChange={(e) => setInputEmail(e.target.value)}
                 />
               </InputGroup>
               <InputGroup justifyContent={"center"}>
                 <Input
                   type="password"
-                  value={passwordVal}
                   fontSize={14}
                   h={12}
                   bg={"white"}
                   onChange={(e) => setPasswordVal(e.target.value)}
-                  placeholder="Enter your password"
+                  placeholder="Enter the Password"
                 />
-                <InputLeftElement>
+                <InputLeftElement h={12}>
+                  <AiOutlineKey color="green.500" size="18px" />
+                </InputLeftElement>
+              </InputGroup>
+              <InputGroup justifyContent={"center"}>
+                <Input
+                  type="password"
+                  fontSize={14}
+                  h={12}
+                  bg={"white"}
+                  onChange={(e) => setPasswordVal(e.target.value)}
+                  placeholder="Confirm Password"
+                />
+                <InputLeftElement h={12}>
                   <AiOutlineKey color="green.500" size="18px" />
                 </InputLeftElement>
               </InputGroup>
@@ -121,7 +143,7 @@ const SignIn = () => {
                 fontWeight={"normal"}
                 h={12}
               >
-                Login
+                Create Account
               </Button>
             </Flex>
             <Box position="relative" padding="10">
@@ -158,8 +180,7 @@ const SignIn = () => {
           <Flex gap={3} fontSize={"lg"} textAlign={"center"}>
             <Button
               as="a"
-              href="/auth/register"
-              colorScheme="black"
+              href="/auth/signin"
               bgColor={"gray.50"}
               variant={"ghost"}
               fontWeight={"bold"}
@@ -167,7 +188,7 @@ const SignIn = () => {
               width="350px"
               h={12}
             >
-              Register an account
+              Already registered ? Login here
             </Button>
           </Flex>
         </Stack>
@@ -175,7 +196,7 @@ const SignIn = () => {
     </Box>
   );
 };
-export default SignIn;
-SignIn.getLayout = function getLayout(page) {
+export default Register;
+Register.getLayout = function getLayout(page) {
   return <AuthLayout>{page}</AuthLayout>;
 };
