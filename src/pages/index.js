@@ -33,6 +33,7 @@ import { Fetcher } from "client";
 import MainLayout from "@/layouts/main.layout";
 import { useCreateStack } from "@/modules/homepage/hooks/useStack";
 import { useState } from "react";
+import PageContent from "@/components/PageContent";
 export async function getServerSideProps(context) {
   const { req, res } = context;
   const session = await getSession({ req });
@@ -54,12 +55,12 @@ const Home = () => {
   const { data: session } = useSession();
   const { createMutation } = useCreateStack();
   const route = useRouter();
-
-  console.log("session", session);
+  const userId = session.user.id;
   const { isLoading, error, data } = useQuery({
     queryKey: ["techData"],
     queryFn: async () =>
       await Fetcher.get("/allTech", {
+        params: { userId: userId },
         headers: {
           Authorization: `bearer ${session.user.token}`,
           "Content-Type": "application/json",
@@ -69,13 +70,18 @@ const Home = () => {
         .catch((error) => console.log(error)),
   });
 
+
   const onSubmitHandler = (e) => {
     e.preventDefault();
     console.log("you clicked", inptValue);
-    createMutation.mutate(inptValue);
+    const formdata = {
+      inputVal: inptValue,
+      session,
+    };
+    createMutation.mutate(formdata);
     onClose();
   };
-
+  const tech = "Start";
   if (session === null) route.push("/auth/signin");
   if (error) return "An error has occurred: " + error.message;
 
@@ -89,24 +95,8 @@ const Home = () => {
       </Head>
 
       <Box bg={"white"} minH={"100vh"}>
-        <Box w={"100%"} bg={"gray.100"}>
-          <Container maxW={"container.sm"}>
-            <Flex
-              h={{ base: "600PX", lg: "450px" }}
-              flexDir={"column"}
-              justifyContent={"center"}
-              alignItems={"center"}
-              gap={5}
-            >
-              <Heading>Start WarmUp</Heading>
-              <Text textAlign={"center"}>
-                A quick way to prepare for your next interview. Practice key
-                questions, get insights about your answers, and get more
-                comfortable interviewing.
-              </Text>
-            </Flex>
-          </Container>
-        </Box>
+        <PageContent tech={tech} />
+       
         <Container maxW={"container.lg"} mt={[-24, -32]}>
           <Grid
             templateColumns="repeat(4, 1fr)"
@@ -142,7 +132,7 @@ const Home = () => {
                       colSpan={[2, 2, 1, 1, 1]}
                       key={idx}
                       h={32}
-                      bg={"gray.600"}
+                      bg={"gray.700"}                                       
                       textAlign={"center"}
                       rounded="lg"
                     >
@@ -162,7 +152,7 @@ const Home = () => {
                           color={"white"}
                           minH={32}
                         >
-                          <Heading
+                          <Heading                         
                             textTransform={"uppercase"}
                             fontWeight="bold"
                             size={"md"}
@@ -179,7 +169,7 @@ const Home = () => {
                   colSpan={[4, 4, 1, 1, 1]}
                   key={123}
                   h={32}
-                  bg={"gray.100"}
+                  bg={"white"}
                   border={"1px dashed gray"}
                   textAlign={"center"}
                   rounded="lg"

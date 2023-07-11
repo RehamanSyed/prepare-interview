@@ -26,14 +26,7 @@ const PageContent = ({ tech, colorSchemeTech }) => {
               comfortable interviewing.
             </Text>
             <Flex gap={2}>
-              <Button
-                colorScheme="purple"
-                fontSize={14}
-                fontWeight={"bold"}
-                variant={"solid"}
-              >
-                Add Question
-              </Button>
+             
               <Button
                 onClick={() => route.back()}
                 colorScheme="whiteAlpha"

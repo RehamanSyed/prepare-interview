@@ -22,9 +22,23 @@ import {
   useEditPost,
   usePostById,
 } from "@/modules/technology/hooks/usePost";
-import { useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import EditPostModal from "@/components/EditPostModal";
-
+export async function getServerSideProps(context) {
+  const { req, res } = context;
+  const session = await getSession({ req });
+  console.log("Context ---<", session);
+  if (!session?.user) {
+    return {
+      redirect: {
+        destination: "/auth/signin",
+      },
+    };
+  }
+  return {
+    props: { session },
+  };
+}
 const Technology = () => {
   const { data: session } = useSession();
   const route = useRouter();
@@ -42,11 +56,13 @@ const Technology = () => {
   const [editMode, setEditMode] = useState();
 
   const addQuestionHandler = () => {
+    console.log("Add mode id")
     setEditMode(false);
     onOpen();
   };
   const editPostHandler = (id) => {
     setPostId(id);
+    console.log("Editmode id",id)
     setEditMode(true);
     onOpen();
   };

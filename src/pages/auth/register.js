@@ -16,6 +16,7 @@ import {
   HStack,
   border,
 } from "@chakra-ui/react";
+import { Fetcher } from "client";
 import { getCsrfToken, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -23,7 +24,9 @@ import { useState } from "react";
 import {
   AiFillGithub,
   AiFillGoogleCircle,
+  AiFillMail,
   AiOutlineKey,
+  AiOutlineMail,
   AiOutlineUser,
 } from "react-icons/ai";
 
@@ -38,25 +41,24 @@ const Register = () => {
   const [inputUsername, setInputUsername] = useState();
   const [passwordVal, setPasswordVal] = useState();
   const route = useRouter();
-  const { data: session } = useSession();
-  //   console.log("session data", session);
 
-  const loginHandler = async (e) => {
+  const registerHandler = async (e) => {
     e.preventDefault();
-    console.log(inputVal);
-    console.log(passwordVal);
-
-    // Register();
-    await Register("credentials", {
-      email: inputVal,
+    const formData = {
+      name: inputUsername,
+      email: inputEmail,
       password: passwordVal,
-      redirect: false,
+    };
+    const response = await Fetcher.post("/register", formData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
+    const result = response.data
+    if(result.success){
+      route.push('/auth/signin')
+    }
   };
-
-  if (session) {
-    route.push("/");
-  }
   return (
     <Box>
       <Container>
@@ -71,22 +73,17 @@ const Register = () => {
             fontSize={"xl"}
             textAlign={"center"}
             flexDirection="column"
-            fontWeight={"bold"}
+            fontWeight={"normal"}
           >
-            Register With us
-            <Link href="/">
-              <Text bgGradient="linear(to-l, #7928CA, #FF0080)" bgClip="text">
-                Interview Warmup !
-              </Text>
-            </Link>
+            Create an account
           </Flex>
           {/*  */}
 
-          <form onSubmit={loginHandler} style={{ width: "350px" }}>
+          <form onSubmit={registerHandler} style={{ width: "350px" }}>
             <Flex justifyContent={"center"} flexDirection={"column"} gap={5}>
               <InputGroup>
                 <InputLeftElement pointerEvents="none" h={12}>
-                  <AiOutlineUser color="gray.300" size={18} />
+                  <AiOutlineUser color="gray.300" size={20} />
                 </InputLeftElement>
                 <Input
                   type="text"
@@ -99,7 +96,7 @@ const Register = () => {
               </InputGroup>
               <InputGroup>
                 <InputLeftElement pointerEvents="none" h={12}>
-                  <AiOutlineUser color="gray.300" size={18} />
+                  <AiOutlineMail color="gray.300" size={20} />
                 </InputLeftElement>
                 <Input
                   type="email"
@@ -120,7 +117,7 @@ const Register = () => {
                   placeholder="Enter the Password"
                 />
                 <InputLeftElement h={12}>
-                  <AiOutlineKey color="green.500" size="18px" />
+                  <AiOutlineKey color="green.300" size={20} />
                 </InputLeftElement>
               </InputGroup>
               <InputGroup justifyContent={"center"}>
@@ -133,7 +130,7 @@ const Register = () => {
                   placeholder="Confirm Password"
                 />
                 <InputLeftElement h={12}>
-                  <AiOutlineKey color="green.500" size="18px" />
+                  <AiOutlineKey color="green.300" size={20} />
                 </InputLeftElement>
               </InputGroup>
               <Button

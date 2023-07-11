@@ -44,6 +44,7 @@ export const useCreatePost = () => {
 };
 export const usePostById = (id) => {
   const { data: session } = useSession();
+  // console.log("result data post id", id);x
   const { isLoading, error, data } = useQuery({
     queryKey: ["postIdData"],
     queryFn: async () => {
@@ -53,13 +54,13 @@ export const usePostById = (id) => {
           "Content-Type": "application/json",
         },
       });
-      console.log("result data", result.data);
+      // console.log("result data", result.data);
       return result.data;
     },
   });
-  useEffect(() => {
-    console.log("usePostById-->", id);
-  }, [id]);
+  // useEffect(() => {
+  //   console.log("usePostById-->", id);
+  // }, [id]);
   return { data };
 };
 export const useEditPost = () => {
@@ -67,9 +68,10 @@ export const useEditPost = () => {
   const queryClient = useQueryClient();
   const editMutation = useMutation({
     mutationKey: ["editTech"],
-    mutationFn: async (id, formData) => {
-      console.log(id);
-      const result = await Fetcher.put(`/updatePost/${id}`, formData, {
+    mutationFn: async ({postId, formData}) => {
+      console.log("popst id--->>>>>>", postId);
+
+      const result = await Fetcher.put(`/updatePost/${postId}`, formData, {
         headers: {
           Authorization: `bearer ${session.user.token}`,
           "Content-Type": "application/json",
