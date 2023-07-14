@@ -6,7 +6,6 @@ const AuthLayout = ({ children }) => {
     <Box bg={"red.200"}>
       <Container>
         <main>{children}</main>
-        <Heading>Gooter</Heading>
       </Container>
     </Box>
   );

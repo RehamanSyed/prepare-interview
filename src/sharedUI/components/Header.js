@@ -32,7 +32,12 @@ const CommonHeader = () => {
           <Flex justifyContent={"space-between"} alignItems={"center"}>
             <Box>
               <Link href="/">
-                <Heading fontSize={20} fontWeight="extrabold">
+                <Heading
+                  fontSize={20}
+                  fontWeight="extrabold"
+                  bgGradient="linear(to-l, #7928CA, #FF0080)"
+                  bgClip="text"
+                >
                   Interview Warmup
                 </Heading>
               </Link>

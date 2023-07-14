@@ -1,11 +1,16 @@
 import React from "react";
 import { Box, Container, Heading, Button, Flex, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-const PageContent = ({tech}) => {
-    const route = useRouter();
+const PageContent = ({ tech, colorSchemeTech }) => {
+  const route = useRouter();
+
   return (
     <>
-      <Box w={"100%"} bg={"gray.100"}>
+      <Box
+        w={"100%"}
+        bgGradient={"linear(to-r, blue.300, teal.500, blue.300)"}
+        color={"white"}
+      >
         <Container maxW={"container.sm"}>
           <Flex
             h={"450px"}
@@ -20,16 +25,18 @@ const PageContent = ({tech}) => {
               questions, get insights about your answers, and get more
               comfortable interviewing.
             </Text>
-            <Button
-              onClick={() => route.back()}
-              colorScheme="red"
-              fontSize={14}
-              color="black"
-              fontWeight={"bold"}
-              variant={"outline"}
-            >
-              Go Back
-            </Button>
+            <Flex gap={2}>
+             
+              <Button
+                onClick={() => route.back()}
+                colorScheme="whiteAlpha"
+                fontSize={14}
+                fontWeight={"bold"}
+                variant={"solid"}
+              >
+                Go Back
+              </Button>
+            </Flex>
           </Flex>
         </Container>
       </Box>

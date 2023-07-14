@@ -11,11 +11,31 @@ import {
   InputLeftElement,
   Stack,
   Text,
+  Form,
+  AbsoluteCenter,
+  HStack,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  CloseButton,
+  useDisclosure,
+  useToast,
+  Select,
 } from "@chakra-ui/react";
 import { getCsrfToken, signIn, signOut, useSession } from "next-auth/react";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
-import { AiOutlineKey, AiOutlineUser } from "react-icons/ai";
+import { useEffect, useState } from "react";
+import logo from "../../../public/logo.svg";
+import {
+  AiFillGithub,
+  AiFillGoogleCircle,
+  AiOutlineKey,
+  AiOutlineUser,
+} from "react-icons/ai";
+import { Controller, useForm } from "react-hook-form";
 
 // export async function getServerSideProps(context) {
 //   return {
@@ -24,117 +44,212 @@ import { AiOutlineKey, AiOutlineUser } from "react-icons/ai";
 // }
 const SignIn = () => {
   // console.log(csrfToken);
-  const [inputVal, setInputVal] = useState("syed@gmail.com");
-  const [passwordVal, setPasswordVal] = useState("123456");
+  const toast = useToast();
+  const [inputVal, setInputVal] = useState();
+  const [passwordVal, setPasswordVal] = useState();
+
+  const [success, setSuccess] = useState(false);
   const route = useRouter();
   const { data: session } = useSession();
-  //   console.log("session data", session);
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
-  const loginHandler = async (e) => {
-    e.preventDefault();
-    console.log(inputVal);
-    console.log(passwordVal);
-
-    // signIn();
-    await signIn("credentials", {
-      email: inputVal,
-      password: passwordVal,
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
+  const onSubmit = async (data) => {
+    console.log(data);
+    const result = await signIn("credentials", {
+      name: data.username,
+      password: data.password,
       redirect: false,
     });
+  
+    route.push("/");
+    setSuccess(result);
   };
+
+
+
+  
+
   const googleHandler = async (e) => {
     signIn("google", { callbackUrl: "http://localhost:3000/" });
   };
   const githubHandler = async (e) => {
     signIn("github", { callbackUrl: "http://localhost:3000/" });
   };
-  if (session) {
+
+  if (success?.ok) {
+   
+    // toast({
+    //   position: "top",
+    //   title: "Login successful",
+    //   status: "success",
+    //   duration: 2000,
+    //   isClosable: true,
+    // });
     route.push("/");
+  } else {
+    // toast({
+    //   position: "top",
+    //   title: "Username or password wrong",
+    //   status: "error",
+    //   duration: 2000,
+    //   variant: "subtle",
+    //   isClosable: true,
+    // });
   }
+
   return (
     <Box>
-      <Container
-        maxW={{
-          base: "90%",
-          sm: "70%",
-          md: "50%",
-          lg: "40%",
-          xl: "30%",
-        }}
-      >
+      <Container>
         <Stack
-          spacing={4}
           minH={"calc(100vh)"}
           justifyContent={"center"}
           alignItems="center"
         >
-          <Heading
-            mb={5}
-            fontWeight="light"
-            fontSize={"3xl"}
+          <Flex
+            gap={3}
+            mb={10}
+            fontSize={"xl"}
             textAlign={"center"}
+            flexDir={"column"}
+            justifyContent={"center"}
+            alignItems="center"
+            fontWeight={"bold"}
           >
-            Please Login
-          </Heading>
-          <Flex gap={3} width="100%">
-            <Button colorScheme="facebook" width="full" onClick={googleHandler}>
-              Google
-            </Button>
-            <Button colorScheme="twitter" width="full" onClick={githubHandler}>
-              GitHub
-            </Button>
+            <Image src={logo} width={100} height={100} alt={"logo"} />
+            Login to
+            <Link href="/">
+              <Text bgGradient="linear(to-l, #7928CA, #FF0080)" bgClip="text">
+                Interview Warmup !
+              </Text>
+            </Link>
           </Flex>
-          <Divider my={10} />
-          <form onSubmit={loginHandler} style={{ width: "100%" }}>
-            <Flex
-              justifyContent={"center"}
-              w={"full"}
-              flexDirection={"column"}
-              gap={5}
-            >
-              <InputGroup>
-                <InputLeftElement pointerEvents="none">
-                  <AiOutlineUser color="gray.300" />
+
+          <form onSubmit={handleSubmit(onSubmit)} style={{ width: "350px" }}>
+            <Flex justifyContent={"center"} flexDirection={"column"} gap={5}>
+              <Controller
+                name="username"
+                control={control}
+                render={({ field }) => (
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" h={12}>
+                      <AiOutlineUser color="gray.300" size={20} />
+                    </InputLeftElement>
+                    <Input
+                      type="text"
+                      fontSize={14}
+                      h={12}
+                      placeholder="Enter your username"
+                      value={inputVal || ""}
+                      bg={"white"}
+                      onChange={(e) => setInputVal(e.target.value)}
+                      {...field}
+                    />
+                  </InputGroup>
+                )}
+              />
+              <Controller
+                name="password"
+                control={control}
+                render={({ field }) => (
+                  <InputGroup justifyContent={"center"}>
+                    <Input
+                      type="password"
+                      value={passwordVal || ""}
+                      fontSize={14}
+                      h={12}
+                      bg={"white"}
+                      onChange={(e) => setPasswordVal(e.target.value)}
+                      placeholder="Enter your password"
+                      {...field}
+                    />
+                    <InputLeftElement h={12}>
+                      <AiOutlineKey color="green.500" size={20} />
+                    </InputLeftElement>
+                  </InputGroup>
+                )}
+              />
+              {/* <Controller
+        name="select"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={[
+              { value: "chocolate", label: "Chocolate" },
+              { value: "strawberry", label: "Strawberry" },
+              { value: "vanilla", label: "Vanilla" },
+            ]}
+          />
+        )}
+      /> 
+      <input type="submit" />*/}
+              {/* <InputGroup>
+                <InputLeftElement pointerEvents="none" h={12}>
+                  <AiOutlineUser color="gray.300" size={20} />
                 </InputLeftElement>
                 <Input
-                  type="email"
-                  bg={"gray.50"}
+                  type="text"
                   fontSize={14}
-                  w={"full"}
+                  h={12}
                   placeholder="Enter your username"
-                  value={inputVal}
+                  value={inputVal || ""}
+                  bg={"white"}
                   onChange={(e) => setInputVal(e.target.value)}
                 />
               </InputGroup>
-              <InputGroup>
-                <InputLeftElement
-                  pointerEvents="none"
-                  color="gray.300"
-                  fontSize="1.2em"
-                />
+              <InputGroup justifyContent={"center"}>
                 <Input
                   type="password"
-                  value={passwordVal}
-                  bg={"gray.50"}
-                  w={"full"}
+                  value={passwordVal || ""}
                   fontSize={14}
+                  h={12}
+                  bg={"white"}
                   onChange={(e) => setPasswordVal(e.target.value)}
                   placeholder="Enter your password"
                 />
-                <InputLeftElement>
-                  <AiOutlineKey color="green.500" />
+                <InputLeftElement h={12}>
+                  <AiOutlineKey color="green.500" size={20} />
                 </InputLeftElement>
-              </InputGroup>
+              </InputGroup> */}
+
               <Button
                 type="submit"
-                variant={"outline"}
-                colorScheme="messenger"
-                width={"100%"}
+                variant={"solid"}
+                colorScheme="purple"
+                fontWeight={"normal"}
+                h={12}
               >
                 Login
               </Button>
             </Flex>
+            <Box position="relative" margin="10">
+              <Divider />
+              <AbsoluteCenter bg="white" px="4" fontSize={12}>
+                Or
+              </AbsoluteCenter>
+            </Box>
           </form>
+          <Flex gap={3} fontSize={"lg"} textAlign={"center"}>
+            <Button
+              as="a"
+              href="/auth/register"
+              colorScheme="black"
+              bgColor={"gray.50"}
+              variant={"ghost"}
+              fontWeight={"bold"}
+              fontSize={14}
+              width="350px"
+              h={12}
+            >
+              Register here
+            </Button>
+          </Flex>
         </Stack>
       </Container>
     </Box>
@@ -144,3 +259,30 @@ export default SignIn;
 SignIn.getLayout = function getLayout(page) {
   return <AuthLayout>{page}</AuthLayout>;
 };
+
+{
+  /* <Box position="relative">
+              <Flex gap={3}>
+                <Button
+                  variant={"solid"}
+                  colorScheme="red"
+                  width="full"
+                  onClick={googleHandler}
+                  h={12}
+                  leftIcon={<AiFillGoogleCircle fontSize={28} />}
+                >
+                  Google
+                </Button>
+                <Button
+                  colorScheme="black"
+                  variant={"solid"}
+                  width="full"
+                  onClick={githubHandler}
+                  leftIcon={<AiFillGithub fontSize={28} />}
+                  h={12}
+                >
+                  Github
+                </Button>
+              </Flex>
+            </Box> */
+}

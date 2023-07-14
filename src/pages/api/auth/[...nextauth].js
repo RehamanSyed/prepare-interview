@@ -4,6 +4,7 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios";
 import { Fetcher } from "client";
+
 export const authOptions = {
   providers: [
     GithubProvider({
@@ -16,22 +17,17 @@ export const authOptions = {
     }),
     CredentialsProvider({
       name: "credentials",
-      // credentials: {
-      //   email: { label: "Email", type: "email" },
-      //   password: { label: "Password", type: "password" },
-      // },
       async authorize(credentials, req) {
-        const { email, password } = credentials;
-        const response = await Fetcher.post("/login", {
-          email: email,
-          password: password,
-        });
-        let user = await response.data;
+        const { name, password } = credentials;
+        const response = await Fetcher.post("/login", { name, password });
+        let user = response.data;
         console.log("reuslt @ credentials--> ", user);
 
-        if (user) {
+        if (user.success) {
+          console.log("User Data==>", user);
           return user;
         } else {
+          console.log("User Data in else==>", user);
           return null;
         }
       },

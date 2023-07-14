@@ -196,7 +196,7 @@ const Post = ({
         <Button
           w={"100%"}
           variant={"solid"}
-          colorScheme={"linkedin"}
+          colorScheme={"pink"}
           rounded={"2xl"}
           p={5}
           h={14}
