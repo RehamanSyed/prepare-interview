@@ -8,9 +8,7 @@ const MainLayout = ({ children }) => {
     <Providers>
       <Box bg={"gray.200"}>
         <CommonHeader />
-        <Box as="main">
-          {children}
-        </Box>
+        <Box as="main">{children}</Box>
         <Footer />
       </Box>
     </Providers>

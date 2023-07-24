@@ -27,7 +27,7 @@ export const useCreatePost = () => {
   const createMutation = useMutation({
     mutationKey: ["createTech"],
     mutationFn: async (formData) => {
-      console.log("Edit Form Data",formData);
+      console.log("Edit Form Data", formData);
       const result = await Fetcher.post("/createPost", formData, {
         headers: {
           Authorization: `bearer ${session.user.token}`,
@@ -46,7 +46,7 @@ export const usePostById = (id) => {
   const { data: session } = useSession();
   // console.log("result data post id", id);x
   const { isLoading, error, data } = useQuery({
-    queryKey: ["postIdData"],
+    queryKey: ["postIdData", id],
     queryFn: async () => {
       const result = await Fetcher.get(`/getPostbyId/${id}`, {
         headers: {
@@ -58,9 +58,10 @@ export const usePostById = (id) => {
       return result.data;
     },
   });
-  // useEffect(() => {
-  //   console.log("usePostById-->", id);
-  // }, [id]);
+  useEffect(() => {
+    console.log("usePostById-->", id);
+  }, [id]);
+
   return { data };
 };
 export const useEditPost = () => {
@@ -68,7 +69,7 @@ export const useEditPost = () => {
   const queryClient = useQueryClient();
   const editMutation = useMutation({
     mutationKey: ["editTech"],
-    mutationFn: async ({postId, formData}) => {
+    mutationFn: async ({ postId, formData }) => {
       console.log("popst id--->>>>>>", postId);
 
       const result = await Fetcher.put(`/updatePost/${postId}`, formData, {

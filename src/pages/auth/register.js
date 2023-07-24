@@ -15,6 +15,7 @@ import {
   AbsoluteCenter,
   HStack,
   border,
+  useToast,
 } from "@chakra-ui/react";
 import { Fetcher } from "client";
 import { getCsrfToken, signOut, useSession } from "next-auth/react";
@@ -37,11 +38,11 @@ import {
 // }
 const Register = () => {
   // console.log(csrfToken);
-  const [inputEmail, setInputEmail] = useState();
-  const [inputUsername, setInputUsername] = useState();
-  const [passwordVal, setPasswordVal] = useState();
+  const [inputEmail, setInputEmail] = useState("");
+  const [inputUsername, setInputUsername] = useState("");
+  const [passwordVal, setPasswordVal] = useState("");
   const route = useRouter();
-
+  const toast = useToast();
   const registerHandler = async (e) => {
     e.preventDefault();
     const formData = {
@@ -49,14 +50,33 @@ const Register = () => {
       email: inputEmail,
       password: passwordVal,
     };
-    const response = await Fetcher.post("/register", formData, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const result = response.data
-    if(result.success){
-      route.push('/auth/signin')
+
+    if (formValidation) {
+      const response = await Fetcher.post("/register", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const result = response.data;
+      // if(result.success){
+      //   route.push('/auth/signin')
+      // }
+    } else {
+      toast({
+        position: "top",
+        title: "All Feilds are required",
+        status: "error",
+        duration: 2000,
+        variant: "subtle",
+        isClosable: true,
+      });
+    }
+  };
+
+  const formValidation = () => {
+    if (inputUsername !== "" && inputEmail !== "" && passwordVal !== "") {
+      return true;
+    } else {
     }
   };
   return (

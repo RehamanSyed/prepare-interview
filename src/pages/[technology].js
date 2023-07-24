@@ -28,6 +28,7 @@ export async function getServerSideProps(context) {
   const { req, res } = context;
   const session = await getSession({ req });
   console.log("Context ---<", session);
+
   if (!session?.user) {
     return {
       redirect: {
@@ -35,6 +36,7 @@ export async function getServerSideProps(context) {
       },
     };
   }
+
   return {
     props: { session },
   };
@@ -50,19 +52,20 @@ const Technology = () => {
   } = useDisclosure();
   const { tech, tid, uid } = route.query;
   const { isLoading, error, data } = useAllPost({ tid, uid });
+
   const [postId, setPostId] = useState("64a23b6280abb8c4626b7fe7");
   const { editMutation } = useEditPost();
   const { deleteMutation } = useDeletePost();
   const [editMode, setEditMode] = useState();
 
   const addQuestionHandler = () => {
-    console.log("Add mode id")
+    console.log("Add mode id");
     setEditMode(false);
     onOpen();
   };
   const editPostHandler = (id) => {
     setPostId(id);
-    console.log("Editmode id",id)
+    console.log("Editmode id", id);
     setEditMode(true);
     onOpen();
   };
@@ -78,6 +81,8 @@ const Technology = () => {
     Javascript: "linear(to-r, blue.300, teal.500, blue.300)",
     Css: "linear(to-r, green.300, red.500, green.300)",
   };
+
+  const { data: postIdData } = usePostById(postId);
 
   return (
     <Box minH={"100vh"} bg={"white"} pb={10}>
@@ -110,6 +115,7 @@ const Technology = () => {
               userId={uid}
               postId={postId}
               editMode={editMode}
+              postIdData={postIdData}
             />
           </>
         ) : (

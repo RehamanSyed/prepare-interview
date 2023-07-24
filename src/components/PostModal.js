@@ -22,11 +22,19 @@ import {
 } from "@/modules/technology/hooks/usePost";
 import { Editor } from "@tinymce/tinymce-react";
 import { Controller, useForm } from "react-hook-form";
-const PostModal = ({ isOpen, onClose, userId, techId, postId, editMode }) => {
+const PostModal = ({
+  isOpen,
+  onClose,
+  userId,
+  techId,
+  postId,
+  editMode,
+  postIdData,
+}) => {
   const { createMutation } = useCreatePost();
   const { editMutation } = useEditPost();
-  const { data: postIdData } = usePostById(postId);
 
+  console.log("post id data-->", postIdData);
   const {
     handleSubmit,
     register,
@@ -52,14 +60,17 @@ const PostModal = ({ isOpen, onClose, userId, techId, postId, editMode }) => {
         example: data.example,
         answer: data.answer,
       };
-      console.log("Edit", formData);
-      editMutation.mutate({postId, formData});
+
+      editMutation.mutate({ postId, formData });
     }
     onClose();
   };
 
   useEffect(() => {
     console.log("id", postIdData);
+    return () => {
+      postIdData;
+    };
   }, [postIdData]);
 
   return (
@@ -76,7 +87,6 @@ const PostModal = ({ isOpen, onClose, userId, techId, postId, editMode }) => {
         <ModalContent>
           <ModalHeader fontWeight={"bold"} fontSize={18}>
             {editMode ? "Edit" : "Add"} Your question and Answer{" "}
-            {editMode ? "---editmode---" : "---not editmode---"}
           </ModalHeader>
           <ModalCloseButton />
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -97,7 +107,10 @@ const PostModal = ({ isOpen, onClose, userId, techId, postId, editMode }) => {
                     Example Url (Ex : CodeSandbox, jsFiddle, StackBlitz, etc.,)
                   </FormLabel>
 
-                  <Input defaultValue={editMode ? postIdData?.example : ""} {...register("example")} />
+                  <Input
+                    defaultValue={editMode ? postIdData?.example : ""}
+                    {...register("example")}
+                  />
                 </FormControl>
 
                 <FormControl>

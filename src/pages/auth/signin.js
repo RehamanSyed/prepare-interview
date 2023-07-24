@@ -22,6 +22,9 @@ import {
   useDisclosure,
   useToast,
   Select,
+  List,
+  ListItem,
+  ListIcon,
 } from "@chakra-ui/react";
 import { getCsrfToken, signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
@@ -53,27 +56,28 @@ const SignIn = () => {
   const { data: session } = useSession();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
-  const { control, handleSubmit } = useForm({
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+  } = useForm({
     defaultValues: {
       username: "",
       password: "",
     },
   });
   const onSubmit = async (data) => {
-    console.log(data);
-    const result = await signIn("credentials", {
-      name: data.username,
-      password: data.password,
-      redirect: false,
-    });
-  
-    route.push("/");
-    setSuccess(result);
+    console.log("data", inputVal);
+
+    // const result = await signIn("credentials", {
+    //   name: data.username,
+    //   password: data.password,
+    //   redirect: false,
+    // });
+
+    // route.push("/");
+    // setSuccess(result);
   };
-
-
-
-  
 
   const googleHandler = async (e) => {
     signIn("google", { callbackUrl: "http://localhost:3000/" });
@@ -83,7 +87,6 @@ const SignIn = () => {
   };
 
   if (success?.ok) {
-   
     // toast({
     //   position: "top",
     //   title: "Login successful",
@@ -131,10 +134,22 @@ const SignIn = () => {
           </Flex>
 
           <form onSubmit={handleSubmit(onSubmit)} style={{ width: "350px" }}>
+            <Flex
+              justifyContent={"start"}
+              flexDirection={"column"}
+              p={3}
+              bg={"red.50"}
+              mb={5}
+            >
+              <List spacing={3}>
+                <ListItem></ListItem>
+              </List>
+            </Flex>
             <Flex justifyContent={"center"} flexDirection={"column"} gap={5}>
               <Controller
                 name="username"
                 control={control}
+                rules={{ required: true }}
                 render={({ field }) => (
                   <InputGroup>
                     <InputLeftElement pointerEvents="none" h={12}>
@@ -145,7 +160,7 @@ const SignIn = () => {
                       fontSize={14}
                       h={12}
                       placeholder="Enter your username"
-                      value={inputVal || ""}
+                      value={inputVal}
                       bg={"white"}
                       onChange={(e) => setInputVal(e.target.value)}
                       {...field}
@@ -153,9 +168,11 @@ const SignIn = () => {
                   </InputGroup>
                 )}
               />
+
               <Controller
                 name="password"
                 control={control}
+                rules={{ required: true }}
                 render={({ field }) => (
                   <InputGroup justifyContent={"center"}>
                     <Input
@@ -217,7 +234,6 @@ const SignIn = () => {
                   <AiOutlineKey color="green.500" size={20} />
                 </InputLeftElement>
               </InputGroup> */}
-
               <Button
                 type="submit"
                 variant={"solid"}
