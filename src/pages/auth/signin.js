@@ -51,7 +51,6 @@ const SignIn = () => {
   const [inputVal, setInputVal] = useState();
   const [passwordVal, setPasswordVal] = useState();
 
-  const [success, setSuccess] = useState(false);
   const route = useRouter();
   const { data: session } = useSession();
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -67,16 +66,31 @@ const SignIn = () => {
     },
   });
   const onSubmit = async (data) => {
-    console.log("data", inputVal);
+    console.log("data", data);
 
-    // const result = await signIn("credentials", {
-    //   name: data.username,
-    //   password: data.password,
-    //   redirect: false,
-    // });
-
-    // route.push("/");
-    // setSuccess(result);
+    const result = await signIn("credentials", {
+      name: data.username,
+      password: data.password,
+      redirect: false,
+    });
+    if (result.ok) {
+      toast({
+        position: "top",
+        title: "Login successful",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
+      route.push("/");
+    } else {
+      toast({
+        position: "top",
+        title: "Username or password wrong",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
+    }
   };
 
   const googleHandler = async (e) => {
@@ -86,24 +100,8 @@ const SignIn = () => {
     signIn("github", { callbackUrl: "http://localhost:3000/" });
   };
 
-  if (success?.ok) {
-    // toast({
-    //   position: "top",
-    //   title: "Login successful",
-    //   status: "success",
-    //   duration: 2000,
-    //   isClosable: true,
-    // });
+  if (session) {
     route.push("/");
-  } else {
-    // toast({
-    //   position: "top",
-    //   title: "Username or password wrong",
-    //   status: "error",
-    //   duration: 2000,
-    //   variant: "subtle",
-    //   isClosable: true,
-    // });
   }
 
   return (

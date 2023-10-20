@@ -27,7 +27,7 @@ import EditPostModal from "@/components/EditPostModal";
 export async function getServerSideProps(context) {
   const { req, res } = context;
   const session = await getSession({ req });
-  console.log("Context ---<", session);
+  // console.log("Context ---<", session);
 
   if (!session?.user) {
     return {
@@ -50,6 +50,7 @@ const Technology = () => {
     onOpen: editonOpen,
     onClose: editClose,
   } = useDisclosure();
+
   const { tech, tid, uid } = route.query;
   const { isLoading, error, data } = useAllPost({ tid, uid });
 
@@ -88,15 +89,16 @@ const Technology = () => {
     <Box minH={"100vh"} bg={"white"} pb={10}>
       <PageContent tech={tech} colorSchemeTech={colorSchemeTech} />
 
-      <Container maxW={"container.lg"}>
-        {tech === "Css" ||
-        tech === "Reactjs" ||
+      {/* tech === "Reactjs" ||
         tech === "Javascript" ||
         tech === "Html" ||
         tech === "NextJs" ||
         tech === "Testing" ||
         tech === "GitHub" ||
-        tech === "Interview Question" ? (
+        tech === "Interview Question" */}
+
+      <Container maxW={"container.lg"}>
+        {tech === tech ? (
           <>
             <Post
               data={data}

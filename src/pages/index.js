@@ -37,7 +37,7 @@ import PageContent from "@/components/PageContent";
 export async function getServerSideProps(context) {
   const { req, res } = context;
   const session = await getSession({ req });
-  console.log("Context ---<", session);
+  // console.log("Context ---<", session);
   if (!session?.user) {
     return {
       redirect: {
@@ -56,6 +56,7 @@ const Home = () => {
   const { createMutation } = useCreateStack();
   const route = useRouter();
   const userId = session.user.id;
+
   const { isLoading, error, data } = useQuery({
     queryKey: ["techData"],
     queryFn: async () =>
@@ -70,7 +71,6 @@ const Home = () => {
         .catch((error) => console.log(error)),
   });
 
-
   const onSubmitHandler = (e) => {
     e.preventDefault();
     console.log("you clicked", inptValue);
@@ -81,8 +81,8 @@ const Home = () => {
     createMutation.mutate(formdata);
     onClose();
   };
-  const tech = "Start";
   if (session === null) route.push("/auth/signin");
+
   if (error) return "An error has occurred: " + error.message;
 
   return (
@@ -95,8 +95,8 @@ const Home = () => {
       </Head>
 
       <Box bg={"white"} minH={"100vh"}>
-        <PageContent tech={tech} />
-       
+        <PageContent tech="Start" />
+
         <Container maxW={"container.lg"} mt={[-24, -32]}>
           <Grid
             templateColumns="repeat(4, 1fr)"
@@ -132,7 +132,7 @@ const Home = () => {
                       colSpan={[2, 2, 1, 1, 1]}
                       key={idx}
                       h={32}
-                      bg={"gray.700"}                                       
+                      bg={"gray.700"}
                       textAlign={"center"}
                       rounded="lg"
                     >
@@ -152,7 +152,7 @@ const Home = () => {
                           color={"white"}
                           minH={32}
                         >
-                          <Heading                         
+                          <Heading
                             textTransform={"uppercase"}
                             fontWeight="bold"
                             size={"md"}

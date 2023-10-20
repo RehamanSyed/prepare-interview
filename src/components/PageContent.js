@@ -1,8 +1,12 @@
 import React from "react";
 import { Box, Container, Heading, Button, Flex, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
+
 const PageContent = ({ tech, colorSchemeTech }) => {
+  const { data: session } = useSession();
   const route = useRouter();
+  console.log("route", route);
 
   return (
     <>
@@ -26,16 +30,21 @@ const PageContent = ({ tech, colorSchemeTech }) => {
               comfortable interviewing.
             </Text>
             <Flex gap={2}>
-             
-              <Button
-                onClick={() => route.back()}
-                colorScheme="whiteAlpha"
-                fontSize={14}
-                fontWeight={"bold"}
-                variant={"solid"}
-              >
-                Go Back
-              </Button>
+              {route.route === "/" ? (
+                ""
+              ) : (
+                <Button
+                  onClick={() => {
+                    route.back();
+                  }}
+                  colorScheme="whiteAlpha"
+                  fontSize={14}
+                  fontWeight={"bold"}
+                  variant={"solid"}
+                >
+                  Go Back
+                </Button>
+              )}
             </Flex>
           </Flex>
         </Container>
